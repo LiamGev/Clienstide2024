@@ -2,7 +2,11 @@
   "name": "@project/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build": "nx run-many -t build",
+    "build:my-app": "nx run my-app:build:production",
+    "test": "nx run-many -t test"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~18.2.0",
@@ -22,6 +26,10 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.8.0",
     "zone.js": "~0.14.3"
+  },
+  "engines": {
+    "node": "^20.0.0",
+    "npm": "^10.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~18.2.0",
