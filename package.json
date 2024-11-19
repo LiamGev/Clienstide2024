@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nx run-many -t build",
-    "build:my-app": "nx run my-app:build:production",
+    "build:my-app": "nx run Clientside:build:production",
     "test": "nx run-many -t test"
   },
   "private": true,
