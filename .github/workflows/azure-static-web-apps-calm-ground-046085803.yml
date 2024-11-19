@@ -18,12 +18,11 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - checkout: self
-        fetchDepth: 0
       - uses: actions/checkout@v3
         with:
           submodules: true
           lfs: false
+          fetch-depth: 0
       - name: Install OIDC Client from Core Package
         run: npm install @actions/core@1.6.0 @actions/http-client
       - name: Get Id Token
