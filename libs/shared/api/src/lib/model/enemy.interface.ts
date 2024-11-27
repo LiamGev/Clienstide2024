@@ -2,7 +2,7 @@ export interface Enemy {
     enemyId: number;
     name: string;
     type: string;
-    hp: number; 
+    health: number; 
     damage: number;
     class: string; 
   }
