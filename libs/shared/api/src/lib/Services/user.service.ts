@@ -38,7 +38,6 @@ export class UserService {
       this.users.push(newUser);
       console.log(this.users);
       return of(undefined);
-
     }
   
     updateUser(id: string, user: User): Observable<void> {

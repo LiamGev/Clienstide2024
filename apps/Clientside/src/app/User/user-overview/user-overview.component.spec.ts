@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserOverviewComponent } from './overview.component';
+import { UserOverviewComponent } from './user-overview.component';
 
 describe('UserOverviewComponent', () => {
   let component: UserOverviewComponent;

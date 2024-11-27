@@ -1,1 +1,58 @@
-<p>enemy-details works!</p>
+<div class="container mx-auto py-8">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">
+    {{ enemy?.name || 'Enemy Not Found' }}
+  </h1>
+
+  <div *ngIf="enemy; else notFound">
+    <!-- Enemy Image -->
+    <div class="mb-6">
+      <!-- <img
+          [src]="enemy.imageUrl || 'assets/default-enemy.png'"
+          alt="{{ enemy.name }}"
+          class="w-full max-w-sm mx-auto rounded-lg shadow-md"
+        /> -->
+    </div>
+
+    <!-- Enemy Details -->
+    <p class="text-lg text-gray-600 mb-4">Type: {{ enemy.type }}</p>
+    <p class="text-lg text-gray-600 mb-4">Health: {{ enemy.health }}</p>
+    <p class="text-lg text-gray-600 mb-4">Damage: {{ enemy.damage }}</p>
+    <p class="text-lg text-gray-600 mb-4">Class: {{ enemy.class }}</p>
+
+    <div class="mt-8 flex justify-start space-x-4">
+      <!-- Back Button -->
+      <button>
+        <a
+          routerLink="/enemies"
+          class="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 transition-all"
+        >
+          Back to Enemy Overview
+        </a>
+      </button>
+      <!-- Edit Button -->
+      <button>
+        <a
+          [routerLink]="['/new-enemy', enemy.enemyId]"
+          class="bg-yellow-500 text-white py-2 px-6 rounded-full hover:bg-yellow-600 transition-all"
+        >
+          Edit Enemy
+        </a>
+      </button>
+      <!-- Delete Button -->
+      <button
+        (click)="onDeleteEnemy()"
+        class="bg-red-600 text-white py-2 px-6 rounded-full hover:bg-red-700 transition-all"
+      >
+        Delete Enemy
+      </button>
+    </div>
+  </div>
+
+  <!-- Error message if enemy not found -->
+  <ng-template #notFound>
+    <p class="text-red-600">
+      Sorry, the enemy you are looking for does not exist.
+    </p>
+    <a routerLink="/enemies" class="text-blue-600">Go back to Enemy Overview</a>
+  </ng-template>
+</div>

@@ -9,9 +9,8 @@ import { HttpClientModule } from '@angular/common/http';
   selector: 'app-user-overview',
   standalone: true,
   imports: [CommonModule, RouterModule, HttpClientModule],
-  providers: [UserService],
-  templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.css'],
+  templateUrl: './user-overview.component.html',
+  styleUrls: ['./user-overview.component.css'],
 })
 export class UserOverviewComponent implements OnInit {
   users: User[] = [];
@@ -20,7 +19,6 @@ export class UserOverviewComponent implements OnInit {
     this.userService.getUsers().subscribe((data) => (this.users = data));
     console.log(this.users);
   }
-  
-  ngOnInit(): void {
-  }
+
+  ngOnInit(): void {}
 }

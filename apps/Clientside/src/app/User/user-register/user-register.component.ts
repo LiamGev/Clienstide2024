@@ -10,7 +10,6 @@ import { HttpClientModule } from '@angular/common/http';
   selector: 'app-user-register',
   standalone: true,
   imports: [CommonModule, FormsModule, HttpClientModule],
-  providers: [UserService],
   templateUrl: './user-register.component.html',
   styleUrl: './user-register.component.css',
 })
@@ -38,7 +37,6 @@ export class UserRegisterComponent implements OnInit {
     } else {
       this.userService.createUser(this.user).subscribe(() => {
         this.router.navigate(['/users']);
-        console.log('User created', this.user);
       });
     }
   }
