@@ -1,3 +1,5 @@
+// import { Url } from "url";
+
 export interface Enemy {
     enemyId: number;
     name: string;
@@ -5,4 +7,5 @@ export interface Enemy {
     health: number; 
     damage: number;
     class: string; 
+    // imageurl: Url;
   }
