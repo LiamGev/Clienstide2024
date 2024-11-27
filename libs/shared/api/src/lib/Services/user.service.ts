@@ -16,6 +16,8 @@ export class UserService {
         { id: '1', name: 'John Doe', email: 'johndoe@gmail.com', role: 'Admin', password: 'password' },
         { id: '2', name: 'Jane Smith', email: 'janesmith@gmail.com', role: 'User', password: 'password' },
         { id: '3', name: 'Alice Johnson', email: 'alicejohnson@gmail.com', role: 'User', password: 'password' },
+        { id: '4', name: 'Bob Brown', email: 'bobbrown@gmail.com', role: 'User', password: 'password' },
+        { id: '5', name: 'Charlie Davis', email: 'charliedavis@gmail.com', role: 'User', password: 'password' }
       ]
       this.nextId = this.users.length + 1;
     }

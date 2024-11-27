@@ -14,6 +14,8 @@ export class ItemService {
       { itemId: 1, name: 'Terraria Sword', description: 'A powerful sword used by heroes.', rarity: 'Rare', dropChance: '10%' },
       { itemId: 2, name: 'Magic Mirror', description: 'A magical mirror that teleports you home.', rarity: 'Common', dropChance: '50%' },
       { itemId: 3, name: 'Golden Key', description: 'A key to open special chests.', rarity: 'Uncommon', dropChance: '20%' },
+      { itemId: 4, name: 'Shadow Armor', description: 'Armor that increases movement speed.', rarity: 'Rare', dropChance: '15%' },
+      { itemId: 5, name: 'Starfury', description: 'A sword that summons falling stars.', rarity: 'Epic', dropChance: '5%' },
     ];
     this.nextId = this.items.length + 1;
   }
