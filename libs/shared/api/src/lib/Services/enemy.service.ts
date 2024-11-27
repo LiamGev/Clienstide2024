@@ -17,6 +17,8 @@ export class EnemyService {
       { enemyId: 1, name: 'Goblin', health: 50, damage: 10, class: 'Warrior', type: 'Beast' },
       { enemyId: 2, name: 'Orc', health: 150, damage: 30, class: 'Brute', type: 'Beast' },
       { enemyId: 3, name: 'Dragon', health: 500, damage: 100, class: 'Mythical', type: 'Dragon' },
+      { enemyId: 4, name: 'Troll', health: 200, damage: 40, class: 'Brute', type: 'Giant' },
+      { enemyId: 5, name: 'Vampire', health: 120, damage: 50, class: 'Stealth', type: 'Undead' },
     ];
     this.nextId = this.enemies.length + 1;
   }
