@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enemy Overview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 font-sans leading-normal tracking-normal">
+    <main class="container mx-auto px-4 py-6">
+      <h1 class="text-3xl font-bold text-gray-800 mb-4">Enemy Overview</h1>
+      <p class="text-gray-600 mb-6">
+        Below is a list of enemies, their attributes, and other details.
+      </p>
+
+      <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <table class="table-auto w-full text-left border-collapse">
+          <thead class="bg-green-600 text-white">
+            <tr>
+              <th class="px-4 py-3">Name</th>
+              <th class="px-4 py-3">Type</th>
+              <th class="px-4 py-3">HP</th>
+              <th class="px-4 py-3">Damage</th>
+              <th class="px-4 py-3">Class</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Example Rows -->
+            <tr class="hover:bg-gray-100">
+              <td class="px-4 py-3 border-t">Zombie</td>
+              <td class="px-4 py-3 border-t">Undead</td>
+              <td class="px-4 py-3 border-t">45</td>
+              <td class="px-4 py-3 border-t">10</td>
+              <td class="px-4 py-3 border-t">Melee</td>
+            </tr>
+            <tr class="hover:bg-gray-100">
+              <td class="px-4 py-3 border-t">Demon Eye</td>
+              <td class="px-4 py-3 border-t">Flying</td>
+              <td class="px-4 py-3 border-t">60</td>
+              <td class="px-4 py-3 border-t">12</td>
+              <td class="px-4 py-3 border-t">Ranged</td>
+            </tr>
+            <tr class="hover:bg-gray-100">
+              <td class="px-4 py-3 border-t">Skeleton</td>
+              <td class="px-4 py-3 border-t">Undead</td>
+              <td class="px-4 py-3 border-t">80</td>
+              <td class="px-4 py-3 border-t">15</td>
+              <td class="px-4 py-3 border-t">Melee</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </body>
+</html>
