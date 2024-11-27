@@ -12,9 +12,9 @@
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts",
-    "src/app/user-details/user-details.component.ts",
+    "src/app/User/user-details/user-details.component.ts",
     "src/app/about-page/about-page.component.ts",
-    "src/app/user-overview/overview.component.ts",
+    "src/app/User/user-overview/overview.component.ts",
     "../../libs/shared/api/src/lib/model/user.interface.ts"
   ]
 }

@@ -1,15 +1,35 @@
 <!-- <app-nx-welcome></app-nx-welcome> -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <ul class="nav">
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/users">User Overview</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/users/1">User Details</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/about">About Page</a>
-    </li>
-  </ul>
+<nav class="bg-green-600 text-white shadow-lg">
+  <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+    <div class="text-xl font-semibold flex items-center space-x-4">
+      <a href="/" class="hover:text-blue-300">
+        <img src="/NewPromoLogo.png" class="w-32 h-auto"
+      /></a>
+    </div>
+    <!-- Navigation Links -->
+    <ul class="flex space-x-6">
+      <li>
+        <a
+          routerLink="/users"
+          class="text-white hover:text-blue-300 transition-colors duration-200"
+          >User Overview</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/users/1"
+          class="text-white hover:text-blue-300 transition-colors duration-200"
+          >User Details</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/about"
+          class="text-white hover:text-blue-300 transition-colors duration-200"
+          >About Page</a
+        >
+      </li>
+    </ul>
+  </div>
 </nav>
 <router-outlet></router-outlet>
