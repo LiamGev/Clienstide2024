@@ -15,6 +15,10 @@
     "src/app/User/user-details/user-details.component.ts",
     "src/app/about-page/about-page.component.ts",
     "src/app/User/user-overview/overview.component.ts",
+    "src/app/Enemy/enemy-details/enemy-details.component.ts",
+    "src/app/Enemy/enemy-overview/enemy-overview.component.ts",
+    "src/app/Item/item-details/item-details.component.ts",
+    "src/app/Item/item-overview/item-overview.component.ts",
     "../../libs/shared/api/src/lib/model/user.interface.ts"
   ]
 }
