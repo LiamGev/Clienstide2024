@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './enemy-details.component.html',
   styleUrls: ['./enemy-details.component.css']
 })
-export class EnemyDetailComponent implements OnInit {
+export class EnemyDetailsComponent implements OnInit {
   enemy: Enemy | undefined;
   
   enemies: Enemy[] = [];
