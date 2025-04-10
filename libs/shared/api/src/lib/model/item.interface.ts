@@ -1,7 +1,7 @@
 // import { Url } from "url";
 
 export interface Item {
-    itemId: number; // Corresponds to Item_id
+    _id?: string; 
     name: string;
     description: string;
     rarity: string;

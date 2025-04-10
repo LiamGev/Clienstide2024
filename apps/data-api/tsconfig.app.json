@@ -10,7 +10,7 @@
     "declaration": true
   },
   "include": ["src/**/*.ts",
-  "../../libs/backend/features/src/lib/meal.module.ts",
-  "../../libs/backend/dto/src/lib/api-response.interceptor.ts"],
+  "../../libs/backend/dto/src/lib/api-response.interceptor.ts",
+  "../../libs/shared/api/src/**/*.ts"],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }

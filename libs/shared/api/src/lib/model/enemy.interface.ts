@@ -1,7 +1,7 @@
 // import { Url } from "url";
 
 export interface Enemy {
-    enemyId: number;
+    _id?: string;
     name: string;
     type: string;
     health: number; 

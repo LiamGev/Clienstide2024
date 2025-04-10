@@ -14,11 +14,11 @@ export class EnemyService {
   constructor(private http: HttpClient) {
     // Mocked enemy data for demonstration purposes
     this.enemies = [
-      { enemyId: 1, name: 'Goblin', health: 50, damage: 10, class: 'Warrior', type: 'Beast' },
-      { enemyId: 2, name: 'Orc', health: 150, damage: 30, class: 'Brute', type: 'Beast' },
-      { enemyId: 3, name: 'Dragon', health: 500, damage: 100, class: 'Mythical', type: 'Dragon' },
-      { enemyId: 4, name: 'Troll', health: 200, damage: 40, class: 'Brute', type: 'Giant' },
-      { enemyId: 5, name: 'Vampire', health: 120, damage: 50, class: 'Stealth', type: 'Undead' },
+      { _id: "1", name: 'Goblin', health: 50, damage: 10, class: 'Warrior', type: 'Beast' },
+      { _id: "2", name: 'Orc', health: 150, damage: 30, class: 'Brute', type: 'Beast' },
+      { _id: "3", name: 'Dragon', health: 500, damage: 100, class: 'Mythical', type: 'Dragon' },
+      { _id: "4", name: 'Troll', health: 200, damage: 40, class: 'Brute', type: 'Giant' },
+      { _id: "5", name: 'Vampire', health: 120, damage: 50, class: 'Stealth', type: 'Undead' },
     ];
     this.nextId = this.enemies.length + 1;
   }
@@ -29,8 +29,8 @@ export class EnemyService {
   }
 
   // Get a specific enemy by ID
-  getEnemyById(id: number): Observable<Enemy> {
-    const enemy = this.enemies.find((e) => e.enemyId === id);
+  getEnemyById(id: string): Observable<Enemy> {
+    const enemy = this.enemies.find((e) => e._id === id);
     if (!enemy) {
       throw new Error(`Enemy with id ${id} not found`);
     }
@@ -46,8 +46,8 @@ export class EnemyService {
   }
 
   // Update an existing enemy
-  updateEnemy(id: number, enemy: Enemy): Observable<void> {
-    const index = this.enemies.findIndex((e) => e.enemyId === id);
+  updateEnemy(id: string, enemy: Enemy): Observable<void> {
+    const index = this.enemies.findIndex((e) => e._id === id);
     if (index !== -1) {
       this.enemies[index] = enemy;
     }
@@ -55,8 +55,8 @@ export class EnemyService {
   }
 
   // Delete an enemy
-  deleteEnemy(id: number): Observable<void> {
-    const index = this.enemies.findIndex((e) => e.enemyId === id);
+  deleteEnemy(id: string): Observable<void> {
+    const index = this.enemies.findIndex((e) => e._id === id);
     if (index !== -1) {
       this.enemies.splice(index, 1);
     }

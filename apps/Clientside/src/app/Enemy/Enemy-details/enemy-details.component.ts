@@ -28,7 +28,7 @@ export class EnemyDetailsComponent implements OnInit {
 
   ngOnInit(): void {
         const enemyId = this.route.snapshot.paramMap.get('id');
-        this.enemy = this.enemies.find(item => item.enemyId === Number(enemyId));
+        this.enemy = this.enemies.find(item => item._id === String(enemyId));
   }
 
   onDeleteEnemy(): void {
@@ -37,7 +37,7 @@ export class EnemyDetailsComponent implements OnInit {
         `Are you sure you want to delete the enemy "${this.enemy.name}"?`
       );
       if (confirmed) {
-        this.enemyService.deleteEnemy(this.enemy.enemyId).subscribe(() => {
+        this.enemyService.deleteEnemy(this.enemy._id!).subscribe(() => {
           alert('Enemy deleted successfully');
           this.router.navigate(['/enemies']);
         });

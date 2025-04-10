@@ -1,21 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private userService: UserService,
+    private jwtService: JwtService
+  ) {}
 
-    // Generate a JWT token
-    async generateToken(payload: any): Promise<string> {
-        return this.jwtService.signAsync(payload);
+  async login(email: string, pass: string): Promise<any> {
+    if (!email || !pass) {
+      throw new BadRequestException('Email and password must be provided');
     }
+  
+    const userResult = await this.userService.getUserByUsername(email);
+    const user = userResult.results;
+  
+    if (!user) {
+      throw new BadRequestException('Invalid credentials (user not found)');
+    }
+  
+    if (!user.password) {
+      throw new BadRequestException('Invalid credentials (no password found)');
+    }
+  
+    const isMatch = await bcrypt.compare(pass, user.password);
+  
+    if (!isMatch) {
+      throw new BadRequestException('Invalid credentials (wrong password)');
+    }
+  
+    const payload = { sub: user._id, email: user.email };
+  
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+      user: user
+    };
+  }  
 
-    // Validate a JWT token
-    async validateToken(token: string): Promise<any> {
-        try {
-            return this.jwtService.verifyAsync(token);
-        } catch (error) {
-            throw new Error('Invalid token');
-        }
-    }
+  async profile(sub: string) {
+    return await this.userService.getUserById(sub);
+  }
 }

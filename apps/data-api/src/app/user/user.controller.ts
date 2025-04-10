@@ -1,19 +1,36 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { UserService } from './user.service';
+import { User } from '@avans-nx-workshop/shared/api';
 
 @Controller('user')
 export class UserController {
+    constructor(private readonly userService: UserService) {}
+
     @Get()
-    getAllUsers(): string {
-        return 'This action returns all users';
+    getAllUsers(): Promise<any[]> {
+        return this.userService.getAllUsers();
     }
 
-    @Get(':id')
-    getUserById(@Param('id') id: string): string {
-        return `This action returns user with id: ${id}`;
+    @Patch(':id')
+    async updateUser(@Param('id') id: string,@Body() updateData: Partial<User>,) {
+      return this.userService.update(id, updateData);
+    }
+
+    // Delete user
+    @Delete(':id')
+    async deleteUser(@Param('id') id: string,) {
+      return this.userService.delete(id);
+    }
+
+    // Get user by name
+    @Get('name/:name')
+    async getUserByName(@Param('name') name: string): Promise<User> {
+        return this.userService.getByName(name);
     }
 
     @Post()
-    createUser(@Body() createUserDto: any): string {
-        return 'This action creates a new user';
+    create(@Body() body: any) {
+      return this.userService.create(body);
     }
 }
