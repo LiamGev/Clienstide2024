@@ -1,10 +1,6 @@
 import { get } from "mongoose";
 
 export const userCypher = {
-    /**
-     * params: name, email, password, role
-     * returns: user
-     */
     addUser: `
       CREATE (user:User {
         name: $name,
@@ -16,10 +12,6 @@ export const userCypher = {
         RETURN user
     `,
 
-    /**
-     * params: email
-     * returns: user
-     */
     removeUser: `
       MATCH (user:User {name: $name})
       DETACH DELETE user
@@ -29,10 +21,6 @@ export const userCypher = {
 
     getUserById: ' MATCH (user:User {id: $id}) RETURN user',
 
-    /**
-     * params: email
-     * returns: user
-     */
     getUserByEmail: `
       MATCH (user:User {email: $email})
       RETURN user

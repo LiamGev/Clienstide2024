@@ -43,36 +43,42 @@ export class BiomeService {
   }
 
   async create(newBiome: BiomeDto, currentUserId: string): Promise<BiomeDto> {
-    // 1. Voeg createdBy toe
     const biomeWithCreator = {
       ...newBiome,
       createdBy: currentUserId,
     };
   
-    // 2. Save in Mongo
     const createdBiome = new this.biomeModel(biomeWithCreator);
     await createdBiome.save();
   
-    // 3. ✅ Hier commonEnemies IDs omzetten naar names
+    
     const enemyDocs = await this.enemyModel.find({
       _id: { $in: createdBiome.commonEnemies }
     }).exec();
-  
     const enemyNames = enemyDocs.map(enemy => enemy.name);
   
-    // 4. Save in Neo4j
+    
     await this.neo4jService.write(biomeCypher.addBiome, {
       name: createdBiome.name,
       description: createdBiome.description,
       difficulty: createdBiome.difficulty,
-      commonEnemies: enemyNames,  // <<< Hier array van namen sturen
+      commonEnemies: enemyNames,
     });
+  
+    
+    for (const enemyName of enemyNames) {
+      await this.neo4jService.write(biomeCypher.addSpawnRelation, {
+        enemyName,
+        biomeName: createdBiome.name,
+      });
+    }
   
     return {
       ...createdBiome.toObject(),
       commonEnemies: [],
     };
   }
+  
   
 
   async updateBiome(id: string, updateData: Partial<BiomeDto>, currentUserId: string): Promise<BiomeDto> {
@@ -82,21 +88,42 @@ export class BiomeService {
       throw new HttpException('Biome not found', 404);
     }
   
-    // Check eigenaar
     if (biome.createdBy.toString() !== currentUserId) {
       throw new ForbiddenException('You are not authorized to update this biome');
     }
   
-    const updatedBiome = await this.biomeModel
-      .findOneAndUpdate({ _id: id }, updateData, { new: true })
-      .populate('commonEnemies')
-      .exec();
+    const updatedBiome = await this.biomeModel.findByIdAndUpdate(id, updateData, { new: true }).populate('commonEnemies').exec();
   
-    await this.neo4jService.write(biomeCypher.updateBiome, {
+    const enemyDocs = await this.enemyModel.find({
+      _id: { $in: updatedBiome.commonEnemies }
+    }).exec();
+    const enemyNames = enemyDocs.map(enemy => enemy.name);
+  
+    
+    await this.neo4jService.write(`
+      MATCH (b:Biome { name: $name })
+      OPTIONAL MATCH (b)-[r:HAS_ENEMY]->()
+      DELETE r
+    `, { name: updatedBiome.name });
+  
+    await this.neo4jService.write(`
+      MATCH (e:Enemy)-[r:SPAWNS_IN]->(b:Biome { name: $name })
+      DELETE r
+    `, { name: updatedBiome.name });
+  
+    await this.neo4jService.write(biomeCypher.addBiome, {
       name: updatedBiome.name,
       description: updatedBiome.description,
       difficulty: updatedBiome.difficulty,
+      commonEnemies: enemyNames,
     });
+  
+    for (const enemyName of enemyNames) {
+      await this.neo4jService.write(biomeCypher.addSpawnRelation, {
+        enemyName,
+        biomeName: updatedBiome.name,
+      });
+    }
   
     return {
       ...updatedBiome.toObject(),
@@ -104,7 +131,6 @@ export class BiomeService {
     };
   }
   
-
   async deleteBiome(id: string, currentUserId: string): Promise<any> {
     const biome = await this.biomeModel.findById(id).exec();
   
@@ -127,6 +153,13 @@ export class BiomeService {
       message: 'Biome successfully deleted',
       id: id,
     };
+  }
+
+  async addSpawnRelation(enemyName: string, biomeName: string) {
+    return this.neo4jService.write(
+      biomeCypher.addSpawnRelation,
+      { enemyName, biomeName }
+    );
   }
   
 }

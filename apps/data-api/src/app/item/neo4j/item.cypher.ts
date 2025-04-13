@@ -1,8 +1,4 @@
 export const itemCypher = {
-    /**
-     * params: itemId, name, description, rarity, dropChance
-     * returns: item
-     */
     addItem: `
       CREATE (item:Item {
         name: $name,
@@ -12,14 +8,17 @@ export const itemCypher = {
       }) RETURN item
     `,
   
-    /**
-     * params: itemId
-     * returns: item
-     */
     removeItem: `
       MATCH (item:Item {name: $name})
       DETACH DELETE item
     `,
+
+    addDropRelation: `
+    MATCH (e:Enemy { name: $enemyName })
+    MATCH (i:Item { name: $itemName })
+    MERGE (e)-[:DROPS]->(i)
+    RETURN e, i
+  `,
 
     updateItem: `
         MATCH (item:Item {name: $name})

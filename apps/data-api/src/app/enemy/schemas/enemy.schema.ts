@@ -24,6 +24,9 @@ export class Enemy {
     @Prop({ required: true })
     class: string;
 
+    @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Item' }], default: [] })
+    droppedItems?: Types.ObjectId[];
+
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
     createdBy: Types.ObjectId;
 
