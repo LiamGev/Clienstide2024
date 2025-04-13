@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsMongoId } from 'class-validator';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 
 export type ItemDocument = Item & Document;
 
@@ -20,6 +20,9 @@ export class Item {
 
     @Prop({ required: true })
     dropChance: string;
+
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
+    createdBy: Types.ObjectId;
 
   // @Prop() imageUrl?: string;
 }

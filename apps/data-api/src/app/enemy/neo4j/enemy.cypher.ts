@@ -5,7 +5,6 @@ export const enemyCypher = {
      */
     addEnemy: `
       CREATE (enemy:Enemy {
-        enemyId: $enemyId,
         name: $name,
         type: $type,
         health: $health,
@@ -19,7 +18,7 @@ export const enemyCypher = {
      * returns: enemy
      */
     removeEnemy: `
-      MATCH (enemy:Enemy {enemyId: $enemyId})
+      MATCH (enemy:Enemy {name: $name})
       DETACH DELETE enemy
     `,
   

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
@@ -12,9 +12,14 @@ import { Enemy } from '@avans-nx-workshop/shared/api';
 export class EnemyService {
     constructor(@InjectModel(enemyModel.name) private readonly enemyModel: Model<EnemyDocument>, private readonly neo4jService: Neo4jService) {}
 
-    async create(enemy: Enemy): Promise<Enemy> {
+    async create(enemy: Enemy, currentUserId: string): Promise<Enemy> {
         try {
-          const createdEnemy = await (new this.enemyModel(enemy)).save();
+          const enemyWithCreator = {
+            ...enemy,
+            createdBy: currentUserId,  // ⬅️ Voeg hier createdBy toe
+          };
+      
+          const createdEnemy = await (new this.enemyModel(enemyWithCreator)).save();
       
           await this.neo4jService.write(enemyCypher.addEnemy, {
             name: createdEnemy.name,
@@ -29,7 +34,8 @@ export class EnemyService {
           console.log('Error creating enemy:', error);
           throw new HttpException('Error creating enemy', 500);
         }
-    }
+      }
+      
 
     async getAll(): Promise<Enemy[]> {
         try {
@@ -41,50 +47,54 @@ export class EnemyService {
         }
     }
 
-    async update(enemyId: string, updateData: Partial<Enemy>): Promise<Enemy> {
-        try {
-          const updatedEnemy = await this.enemyModel.findByIdAndUpdate(
-            enemyId,
-            updateData,
-            { new: true }
-          ).exec();
+    async update(enemyId: string, updateData: Partial<Enemy>, currentUserId: string): Promise<Enemy> {
+        const enemy = await this.enemyModel.findById(enemyId).exec();
       
-          if (!updatedEnemy) {
-            throw new HttpException('Enemy not found', 404);
-          }
-      
-          await this.neo4jService.write(enemyCypher.updateEnemy, {
-            name: updatedEnemy.name,
-            type: updatedEnemy.type,
-            health: updatedEnemy.health,
-            damage: updatedEnemy.damage,
-            class: updatedEnemy.class,
-          });
-      
-          return updatedEnemy;
-        } catch (error) {
-          console.log('Error updating enemy:', error);
-          throw new HttpException('Error updating enemy', 500);
+        if (!enemy) {
+          throw new HttpException('Enemy not found', 404);
         }
+      
+        if (enemy.createdBy.toString() !== currentUserId) {
+          throw new ForbiddenException('You are not authorized to update this enemy');
+        }
+      
+        const updatedEnemy = await this.enemyModel.findByIdAndUpdate(
+          enemyId,
+          updateData,
+          { new: true }
+        ).exec();
+      
+        // 🛠️ Update ook in Neo4j
+        await this.neo4jService.write(enemyCypher.updateEnemy, {
+          name: updatedEnemy.name,
+          type: updatedEnemy.type,
+          health: updatedEnemy.health,
+          damage: updatedEnemy.damage,
+          class: updatedEnemy.class,
+        });
+      
+        return updatedEnemy;
     }
         
-    async delete(enemyId: string): Promise<Enemy> {
-        try {
-          const deletedEnemy = await this.enemyModel.findByIdAndDelete(enemyId).exec();
+    async delete(enemyId: string, currentUserId: string): Promise<Enemy> {
+        const enemy = await this.enemyModel.findById(enemyId).exec();
       
-          if (!deletedEnemy) {
-            throw new HttpException('Enemy not found', 404);
-          }
-      
-          await this.neo4jService.write(enemyCypher.removeEnemy, {
-            name: deletedEnemy.name,
-          });
-      
-          return deletedEnemy;
-        } catch (error) {
-          console.log('Error deleting enemy:', error);
-          throw new HttpException('Error deleting enemy', 500);
+        if (!enemy) {
+          throw new HttpException('Enemy not found', 404);
         }
+      
+        if (enemy.createdBy.toString() !== currentUserId) {
+          throw new ForbiddenException('You are not authorized to delete this enemy');
+        }
+      
+        const deletedEnemy = await this.enemyModel.findByIdAndDelete(enemyId).exec();
+      
+        await this.neo4jService.write(enemyCypher.removeEnemy, {
+          name: deletedEnemy.name,
+        });
+      
+        return deletedEnemy;
     }
+      
         
 }

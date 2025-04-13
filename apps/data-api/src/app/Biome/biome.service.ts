@@ -42,51 +42,82 @@ export class BiomeService {
     };
   }
 
-  async create(newBiome: BiomeDto): Promise<BiomeDto> {
-    const createdBiome = new this.biomeModel(newBiome);
+  async create(newBiome: BiomeDto, currentUserId: string): Promise<BiomeDto> {
+    // 1. Voeg createdBy toe
+    const biomeWithCreator = {
+      ...newBiome,
+      createdBy: currentUserId,
+    };
+  
+    // 2. Save in Mongo
+    const createdBiome = new this.biomeModel(biomeWithCreator);
     await createdBiome.save();
-
+  
+    // 3. ✅ Hier commonEnemies IDs omzetten naar names
+    const enemyDocs = await this.enemyModel.find({
+      _id: { $in: createdBiome.commonEnemies }
+    }).exec();
+  
+    const enemyNames = enemyDocs.map(enemy => enemy.name);
+  
+    // 4. Save in Neo4j
     await this.neo4jService.write(biomeCypher.addBiome, {
       name: createdBiome.name,
       description: createdBiome.description,
       difficulty: createdBiome.difficulty,
+      commonEnemies: enemyNames,  // <<< Hier array van namen sturen
     });
-
+  
     return {
       ...createdBiome.toObject(),
       commonEnemies: [],
     };
   }
+  
 
-  async updateBiome(id: string, updateData: Partial<BiomeDto>): Promise<BiomeDto> {
-    const biome = await this.biomeModel
+  async updateBiome(id: string, updateData: Partial<BiomeDto>, currentUserId: string): Promise<BiomeDto> {
+    const biome = await this.biomeModel.findById(id).exec();
+  
+    if (!biome) {
+      throw new HttpException('Biome not found', 404);
+    }
+  
+    // Check eigenaar
+    if (biome.createdBy.toString() !== currentUserId) {
+      throw new ForbiddenException('You are not authorized to update this biome');
+    }
+  
+    const updatedBiome = await this.biomeModel
       .findOneAndUpdate({ _id: id }, updateData, { new: true })
       .populate('commonEnemies')
       .exec();
   
-    if (!biome) {
-      throw new HttpException('Biome not found', 404);
-    }
-  
     await this.neo4jService.write(biomeCypher.updateBiome, {
-      name: biome.name,
-      description: biome.description,
-      difficulty: biome.difficulty,
+      name: updatedBiome.name,
+      description: updatedBiome.description,
+      difficulty: updatedBiome.difficulty,
     });
   
     return {
-      ...biome.toObject(),
-      commonEnemies: (biome.commonEnemies as any[]).map((enemy: any) => enemy._id.toString()),
+      ...updatedBiome.toObject(),
+      commonEnemies: (updatedBiome.commonEnemies as any[]).map((enemy: any) => enemy._id.toString()),
     };
   }
   
 
-  async deleteBiome(id: string): Promise<any> {
-    const biome = await this.biomeModel.findByIdAndDelete(id).exec();
+  async deleteBiome(id: string, currentUserId: string): Promise<any> {
+    const biome = await this.biomeModel.findById(id).exec();
   
     if (!biome) {
       throw new HttpException('Biome not found', 404);
     }
+  
+    // Check eigenaar
+    if (biome.createdBy.toString() !== currentUserId) {
+      throw new ForbiddenException('You are not authorized to delete this biome');
+    }
+  
+    await this.biomeModel.findByIdAndDelete(id).exec();
   
     await this.neo4jService.write(biomeCypher.removeBiome, {
       name: biome.name,
@@ -98,5 +129,4 @@ export class BiomeService {
     };
   }
   
-
 }

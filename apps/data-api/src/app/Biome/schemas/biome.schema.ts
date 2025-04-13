@@ -19,11 +19,12 @@ export class Biome {
   @Prop({ required: true })
   difficulty: string;
 
-  @Prop({
-    type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Enemy' }],
-    default: [],
-  })
+  @Prop({type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Enemy' }],default: [],})
   commonEnemies: Types.ObjectId[];
+
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
+  createdBy: Types.ObjectId;
+
 }
 
 export const BiomeSchema = SchemaFactory.createForClass(Biome);

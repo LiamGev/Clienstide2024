@@ -6,7 +6,14 @@ import { UserModule } from './user/user.module';
 import { UserController } from './user/user.controller';
 import { Neo4jModule} from './neo4j/neo4j.module';
 import { Neo4jScheme } from './neo4j/neo4j.config.interface';
-
+import { EnemyController } from './enemy/enemy.controller';
+import { ItemController } from './item/item.controller';
+import { AuthModule } from './auth/auth.module';
+import { EnemyModule } from './enemy/enemy.module';
+import { ItemModule } from './item/item.module';
+import { AuthController } from './auth/auth.controller';
+import { BiomeController } from './Biome/biome.controller';
+import { BiomeModule } from './Biome/biome.module';
 
 @Module({
   imports:[
@@ -17,9 +24,9 @@ import { Neo4jScheme } from './neo4j/neo4j.config.interface';
       username: process.env.NEO4J_USR,
       password: process.env.NEO4J_PWD,
       database: process.env.NEO4J_DATABASE,}),
-      UserModule,
+    UserModule, AuthModule, EnemyModule, ItemModule, BiomeModule
   ],
-  controllers: [AppController, UserController],
+  controllers: [AppController, UserController, EnemyController, ItemController, AuthController, BiomeController],
   providers: [AppService],
 })
 export class AppModule {}

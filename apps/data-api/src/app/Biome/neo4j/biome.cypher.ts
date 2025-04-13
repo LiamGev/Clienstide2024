@@ -4,20 +4,24 @@ export const biomeCypher = {
      * returns: biome
      */
     addBiome: `
-      CREATE (biome:Biome {
-        biomeId: $biomeId,
-        name: $name,
-        description: $description,
-        difficulty: $difficulty
-      }) RETURN biome
-    `,
+    CREATE (biome:Biome {
+      name: $name,
+      description: $description,
+      difficulty: $difficulty
+    })
+    WITH biome
+    UNWIND $commonEnemies AS enemyName
+    MATCH (enemy:Enemy { name: enemyName })
+    MERGE (biome)-[:HAS_ENEMY]->(enemy)
+    RETURN biome
+  `,
   
     /**
      * params: biomeId
      * returns: biome
      */
     removeBiome: `
-      MATCH (biome:Biome {biomeId: $biomeId})
+      MATCH (biome:Biome {name: $name})
       DETACH DELETE biome
     `,
   

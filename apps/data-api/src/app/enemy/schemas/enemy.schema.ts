@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsMongoId } from 'class-validator';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 
 export type EnemyDocument = Enemy & Document;
 
@@ -23,6 +23,9 @@ export class Enemy {
 
     @Prop({ required: true })
     class: string;
+
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
+    createdBy: Types.ObjectId;
 
   // @Prop() imageUrl?: string;
 }
