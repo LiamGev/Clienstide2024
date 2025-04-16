@@ -103,6 +103,9 @@ jobs:
 
             - name: Unzip artifact for deployment
               run: unzip data-api-release.zip
+            
+            - name: Toon inhoud van map na unzip
+              run: ls -la
 
             - name: Install dependencies
               run: npm install
