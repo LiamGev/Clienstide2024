@@ -120,4 +120,5 @@ jobs:
                   app-name: 'CSideApp'
                   slot-name: 'Production'
                   publish-profile: ${{ secrets.NESTJS_PUBLISHPROFILE }}
-                  package: backend
+                  package: ./backend/
+                  clean: true # Optional: Clean the destination folder before deployment
