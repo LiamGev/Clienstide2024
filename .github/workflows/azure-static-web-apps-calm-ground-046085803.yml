@@ -15,6 +15,8 @@ jobs:
         name: Build and zip apps from /dist
         steps:
             - uses: actions/checkout@v4
+              with:
+                path: .
 
             - name: Set up Node.js version
               uses: actions/setup-node@v4
@@ -89,6 +91,9 @@ jobs:
 
             - name: Unzip artifact for deployment
               run: unzip data-api-release.zip
+
+            - name: Move into correct working directory
+              run: cd ../.. 
 
             - name: Install dependencies
               run: npm install
