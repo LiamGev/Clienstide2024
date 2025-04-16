@@ -103,7 +103,7 @@ jobs:
               id: deploy-to-webapp
               uses: azure/webapps-deploy@v3
               with:
-                  app-name: 'CSideApp'
+                  app-name: 'NodeAppCside'
                   slot-name: 'Production'
                   publish-profile: ${{ secrets.NESTJS_PUBLISHPROFILE }}
                   package: ./data-api-release.zip
