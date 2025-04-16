@@ -55,8 +55,9 @@ jobs:
             - name: Upload data-api artifact for deployment job
               uses: actions/upload-artifact@v4
               with:
-                  name: data-api
-                  path: data-api-release.zip
+                name: data-api
+                path: dist/apps/data-api
+
 
     deploy-my-app:
         runs-on: ubuntu-latest
@@ -100,13 +101,7 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                   name: data-api
-                  path: .
-
-            - name: Rename artifact zip
-              run: mv data-api data-api-release.zip
-
-            - name: Unzip artifact for deployment
-              run: unzip data-api-release.zip -d api
+                  path: ./api
             
             - name: Toon inhoud van map na unzip
               run: ls -la
