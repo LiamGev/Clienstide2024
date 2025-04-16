@@ -97,8 +97,13 @@ jobs:
             - name: Unzip artifact for deployment
               run: unzip data-api-release.zip
 
+            - name: Move into correct working directory
+              run: cd ../.. 
+
             - name: Install dependencies
-              run: npm install
+              run: npm ci
+              working-directory: .
+
 
             - name: 'Deploy to Azure Web App'
               id: deploy-to-webapp
