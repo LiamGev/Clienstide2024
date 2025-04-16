@@ -56,7 +56,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                   name: data-api
-                  path: dist/apps/data-api
+                  path: data-api-release.zip
 
     deploy-my-app:
         runs-on: ubuntu-latest
@@ -100,7 +100,9 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                   name: data-api
-                  path: ./data-api
+
+            - name: Unzip artifact for deployment
+              run: unzip data-api-release.zip
 
             - name: Install dependencies
               run: npm install
@@ -112,4 +114,4 @@ jobs:
                   app-name: 'CSideApp'
                   slot-name: 'Production'
                   publish-profile: ${{ secrets.NESTJS_PUBLISHPROFILE }}
-                  package: ./data-api
+                  package: .
