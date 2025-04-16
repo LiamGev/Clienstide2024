@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards, Request} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
-import { User } from '@avans-nx-workshop/shared/api';
+import { User } from '@project/libs/shared/api';
 import { AuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('user')

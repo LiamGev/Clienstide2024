@@ -4,7 +4,7 @@ import { userCypher } from '../user/neo4j/user.cypher';
 import { User as UserModel, UserDocument } from './schemas/user.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from '@avans-nx-workshop/shared/api';
+import { User } from '@project/libs/shared/api';
 import * as bcrypt from 'bcrypt';
 
 

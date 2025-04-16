@@ -13,7 +13,7 @@
     "composite": true,
   },
   "include": ["src/**/*.ts",
-"../../shared/api/src/lib/model/api-response.interface.ts",
+"../../shared/api/src/lib/model/api-response.interface.ts","../../shared/api/src/**/*.ts", 
 ],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }

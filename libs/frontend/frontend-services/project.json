@@ -1,5 +1,5 @@
 {
-  "name": "frontend-services",
+  "name": "@project/frontend-services",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/frontend/frontend-services/src",
   "prefix": "lib",

@@ -5,7 +5,7 @@ import { Biome as BiomeModel, BiomeDocument } from './schemas/biome.schema';
 import { Enemy as EnemyModel, EnemyDocument } from '../enemy/schemas/enemy.schema';
 import { Neo4jService } from '../neo4j/neo4j.service';
 import { biomeCypher } from './neo4j/biome.cypher';
-import { Biome, Enemy } from '@avans-nx-workshop/shared/api';
+import { Biome, Enemy } from '@project/libs/shared/api';
 import { BiomeDto } from './schemas/biome.dto';
 import { EnemyDto } from '../enemy/schemas/enemy.dto';
 

@@ -9,8 +9,6 @@
     "composite": true,
     "declaration": true
   },
-  "include": ["src/**/*.ts",
-  "../../libs/backend/dto/src/lib/api-response.interceptor.ts",
-  "../../libs/shared/api/src/**/*.ts"],
+  "include": ["src/**/*.ts", "../../libs/backend/dto/src/index.ts", "../../libs/shared/api/src", "../../libs/backend/dto/src/lib/api-response.interceptor.ts"],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }

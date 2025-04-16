@@ -79,6 +79,9 @@
         "serveTargetName": "serve",
         "previewTargetName": "preview"
       }
+    },
+    {
+      "plugin": "@nx/nest"
     }
   ],
   "generators": {

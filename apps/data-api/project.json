@@ -5,14 +5,24 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "webpackConfig": "apps/data-api/webpack.config.js",
+        "outputPath": "dist/apps/data-api",
+        "assets": [],
+        "externalDependencies": "all",
+        "generatePackageJson": true
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "dependsOn": ["build"],
       "options": {
         "buildTarget": "data-api:build",
-        "runBuildTargetDependencies": false,
-        "generatePackageJson": true
+        "runBuildTargetDependencies": false
       },
       "configurations": {
         "development": {
@@ -23,16 +33,6 @@
         }
       }
     },
-    "build": {
-      "executor": "@nx/js:node",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/apps/data-api",
-        "main": "apps/data-api/src/main.ts",
-        "tsConfig": "apps/data-api/tsconfig.app.json",
-        "assets": [],
-        "generatePackageJson": true
-      },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
@@ -41,4 +41,4 @@
       }
     }
   }
-}}
+}
