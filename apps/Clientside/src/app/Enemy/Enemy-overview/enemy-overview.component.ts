@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Enemy } from 'libs/shared/api/src/lib/model/enemy.interface';
-import { EnemyService } from 'libs/shared/api/src/lib/Services/enemy.service';
+import { EnemyService } from '@project/frontend-services';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -17,8 +17,8 @@ export class EnemyOverviewComponent implements OnInit {
   constructor(private enemyService: EnemyService) {}
 
   ngOnInit(): void {
-    // Fetch the list of enemies when the component initializes
-    this.enemyService.getEnemies().subscribe((data) => {
+    this.enemyService.getAllEnemies().subscribe((data) => {
+      console.log('Data from API:', data);
       this.enemies = data;
     });
   }

@@ -32,10 +32,10 @@
           <tbody>
             <!-- Iterate over the items array -->
             <tr *ngFor="let item of items" class="hover:bg-gray-100">
-              <td class="px-4 py-3 border-t">{{ item.itemId }}</td>
+              <td class="px-4 py-3 border-t">{{ item._id }}</td>
               <td class="px-4 py-3 border-t">
                 <!-- Dynamic item link -->
-                <a [routerLink]="['/items', item.itemId]" class="text-blue-600 hover:text-blue-800">
+                <a [routerLink]="['/items', item._id]" class="text-blue-600 hover:text-blue-800">
                   {{ item.name }}
                 </a>
               </td>

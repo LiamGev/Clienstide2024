@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Item } from 'libs/shared/api/src/lib/model/item.interface';
-import { ItemService } from 'libs/shared/api/src/lib/Services/item.service';
+import { ItemService } from '@project/frontend-services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -14,7 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrls: ['./item-form.component.css'],
 })
 export class ItemFormComponent {
-  item: Item = { itemId: 0, name: '', description: '', rarity: '', dropChance: '' };
+  item: Partial<Item> = { name: '', description: '', rarity: '', dropChance: '' };
 
   constructor(
     private itemService: ItemService,
@@ -25,22 +25,23 @@ export class ItemFormComponent {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.itemService.getItemById(+id).subscribe((data) => (this.item = data));
+      this.itemService.getItemById(id).subscribe((data) => (this.item = data));
     }
   }
 
   onSubmit(): void {
-    if (this.item.itemId) {
-      this.itemService.updateItem(this.item.itemId, this.item).subscribe(() => {
+    if (this.item._id) {
+      this.itemService.updateItem(this.item._id, this.item).subscribe(() => {
         alert('Item updated successfully');
         this.router.navigate(['/items']);
       });
     } else {
-      this.itemService.createItem(this.item).subscribe(() => {
+      this.itemService.createItem(this.item as Item).subscribe(() => {
         alert('Item created successfully');
         this.router.navigate(['/items']);
       });
     }
   }
-
 }
+
+

@@ -1,0 +1,38 @@
+<div class="container mx-auto mt-10">
+    <h2 class="text-3xl font-semibold mb-6">Biome Overview</h2>
+  
+    <div class="flex justify-end mb-6">
+      <a
+        routerLink="/new-biome"
+        class="bg-green-600 text-white px-4 py-2 rounded-md shadow hover:bg-green-700"
+      >
+        + Add Biome
+      </a>
+    </div>
+  
+    <div class="bg-white shadow-md rounded-lg">
+      <table class="table-auto w-full text-left border-collapse">
+        <thead class="bg-green-600 text-white">
+          <tr>
+            <th class="px-4 py-2">Name</th>
+            <th class="px-4 py-2">Description</th>
+            <th class="px-4 py-2">Difficulty</th>
+            <th class="px-4 py-2">Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let biome of biomes" class="hover:bg-gray-100">
+            <td class="px-4 py-2">{{ biome.name }}</td>
+            <td class="px-4 py-2">{{ biome.description }}</td>
+            <td class="px-4 py-2">{{ biome.difficulty }}</td>
+            <td class="px-4 py-2">
+              <a [routerLink]="['/biomes', biome._id]" class="text-blue-600 hover:underline">
+                View Details
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

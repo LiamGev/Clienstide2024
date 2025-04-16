@@ -29,21 +29,17 @@
       <!-- Rarity Field -->
       <div>
         <label for="rarity" class="block text-sm font-medium text-gray-700">Rarity</label>
-        <select
+        <input
+          type="text"
           id="rarity"
           [(ngModel)]="item.rarity"
           name="rarity"
           required
           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="" disabled selected>Select Rarity</option>
-          <option value="Common">Common</option>
-          <option value="Uncommon">Uncommon</option>
-          <option value="Rare">Rare</option>
-          <option value="Legendary">Legendary</option>
-        </select>
+          placeholder="e.g., Common, Rare, Legendary"
+        />
       </div>
-  
+
       <!-- Drop Chance Field -->
       <div>
         <label for="dropChance" class="block text-sm font-medium text-gray-700">Drop Chance</label>

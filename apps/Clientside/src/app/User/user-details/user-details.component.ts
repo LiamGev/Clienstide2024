@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'libs/shared/api/src/lib/model/user.interface';
-import { UserService } from 'libs/shared/api/src/lib/Services/user.service';
+import { UserService } from '@project/frontend-services';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 
@@ -32,7 +32,7 @@ export class UserDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     const userId = this.route.snapshot.paramMap.get('id');
-    const foundUser = this.users.find((user) => user.id === userId);
+    const foundUser = this.users.find((user) => user._id === userId);
     if (foundUser) {
       this.user = foundUser;
     }
@@ -40,12 +40,12 @@ export class UserDetailsComponent implements OnInit {
   }
 
   onDeleteUser(): void {
-    if (this.user && this.user.id) {
+    if (this.user && this.user._id) {
       const confirmDelete = confirm(
         `Are you sure you want to delete the user "${this.user.name}"?`
       );
       if (confirmDelete) {
-        this.userService.deleteUser(this.user.id).subscribe(() => {
+        this.userService.deleteUser(this.user._id).subscribe(() => {
           alert('User deleted successfully.');
           this.router.navigate(['/users']);
         });

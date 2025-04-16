@@ -1,7 +1,7 @@
 {
   "name": "data-api",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "data-api/src",
+  "sourceRoot": "apps/data-api/src",
   "projectType": "application",
   "tags": [],
   "targets": {

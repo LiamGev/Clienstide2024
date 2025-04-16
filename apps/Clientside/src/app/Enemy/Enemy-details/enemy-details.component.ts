@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Enemy } from 'libs/shared/api/src/lib/model/enemy.interface';
-import { EnemyService } from 'libs/shared/api/src/lib/Services/enemy.service';
+import { EnemyService } from '@project/frontend-services';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -12,37 +12,44 @@ import { CommonModule } from '@angular/common';
   templateUrl: './enemy-details.component.html',
   styleUrls: ['./enemy-details.component.css']
 })
-export class EnemyDetailComponent implements OnInit {
-  enemy: Enemy | undefined;
-  
-  enemies: Enemy[] = [];
+export class EnemyDetailsComponent implements OnInit {
+  enemy?: Enemy;
+  error = '';
 
   constructor(
     private enemyService: EnemyService,
     private route: ActivatedRoute,
     private router: Router
-  ) {
-    this.enemyService.getEnemies().subscribe((data) => (this.enemies = data));
-    console.log(this.enemies);
-  }
+  ) {}
 
   ngOnInit(): void {
-        const enemyId = this.route.snapshot.paramMap.get('id');
-        this.enemy = this.enemies.find(item => item.enemyId === Number(enemyId));
+    const enemyId = this.route.snapshot.paramMap.get('id');
+    if (enemyId) {
+      this.enemyService.getEnemyById(enemyId).subscribe({
+        next: (enemy) => {
+          this.enemy = enemy;
+        },
+        error: (err) => {
+          console.error('Error fetching enemy:', err);
+          this.error = 'Enemy not found or could not be loaded.';
+        }
+      });
+    } else {
+      this.error = 'Invalid enemy ID.';
+    }
   }
 
   onDeleteEnemy(): void {
-    if (this.enemy) {
+    if (this.enemy && this.enemy._id) {
       const confirmed = confirm(
         `Are you sure you want to delete the enemy "${this.enemy.name}"?`
       );
       if (confirmed) {
-        this.enemyService.deleteEnemy(this.enemy.enemyId).subscribe(() => {
+        this.enemyService.deleteEnemy(this.enemy._id).subscribe(() => {
           alert('Enemy deleted successfully');
           this.router.navigate(['/enemies']);
         });
       }
     }
   }
-
 }

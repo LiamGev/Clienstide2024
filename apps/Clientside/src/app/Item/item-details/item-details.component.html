@@ -1,62 +1,55 @@
-<div class="container mx-auto py-8">
-  <h1 class="text-3xl font-bold text-gray-800 mb-6">
-    {{ Item?.name || 'Item Not Found' }}
-  </h1>
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="bg-white shadow-lg rounded-lg p-8 max-w-xl w-full">
+    <ng-container *ngIf="item; else notFound">
+      <!-- Item Image -->
+      <div class="w-full h-60 bg-gray-200 flex items-center justify-center">
+        <img src="/default-item.png" alt="Biome image" class="h-full object-cover" />
+      </div>
 
-  <div *ngIf="Item; else notFound">
-    <!-- Item Image -->
-    <div class="mb-6">
-      <!-- <img
-        [src]="Item.imageUrl || 'assets/default-item.png'"
-        alt="{{ Item.name }}"
-        class="w-full max-w-sm mx-auto rounded-lg shadow-md"
-      /> -->
-    </div>
+      <!-- Item Title -->
+      <h1 class="text-3xl font-bold text-center text-gray-800 mb-4">
+        {{ item.name }}
+      </h1>
 
-    <!-- Item Details -->
-    <p class="text-lg text-gray-600 mb-4">
-      Description: {{ Item.description }}
-    </p>
-    <p class="text-lg text-gray-600 mb-4">Rarity: {{ Item.rarity }}</p>
-    <p class="text-lg text-gray-600 mb-4">Drop Chance: {{ Item.dropChance }}</p>
+      <!-- Item Details -->
+      <div class="space-y-3 text-gray-700">
+        <p><span class="font-semibold">Description:</span> {{ item.description }}</p>
+        <p><span class="font-semibold">Rarity:</span> {{ item.rarity }}</p>
+        <p><span class="font-semibold">Drop Chance:</span> {{ item.dropChance }}</p>
+      </div>
 
-    <!-- Action Buttons -->
-    <div class="mt-8 flex justify-start space-x-4">
-      <!-- Back Button -->
-      <button>
+      <!-- Action Buttons -->
+      <div class="mt-8 flex justify-between items-center flex-wrap gap-4">
         <a
           routerLink="/items"
-          class="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 transition-all"
+          class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
         >
-          Back to Item Overview
+          ← Back to Overview
         </a>
-      </button>
 
-      <!-- Edit Button -->
-      <button>
-        <a
-          [routerLink]="['/new-item', Item.itemId]"
-          class="bg-yellow-500 text-white py-2 px-6 rounded-full hover:bg-yellow-600 transition-all"
-        >
-          Edit Item
-        </a>
-      </button>
+        <div class="flex gap-4">
+          <a
+            [routerLink]="['/new-item', item._id]"
+            class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition"
+          >
+            Edit
+          </a>
+          <button
+            (click)="onDeleteItem()"
+            class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </ng-container>
 
-      <!-- Delete Button -->
-      <button
-        (click)="onDeleteItem()"
-        class="bg-red-600 text-white py-2 px-6 rounded-full hover:bg-red-700 transition-all"
-      >
-        Delete Item
-      </button>
-    </div>
+    <!-- Error template -->
+    <ng-template #notFound>
+      <div class="text-center text-red-600 mt-6">
+        <p>Sorry, the item you are looking for does not exist.</p>
+        <a routerLink="/items" class="text-blue-600 underline mt-2 inline-block">Go back to Item Overview</a>
+      </div>
+    </ng-template>
   </div>
-
-  <!-- Error message if item not found -->
-  <ng-template #notFound>
-    <p class="text-red-600">
-      Sorry, the item you are looking for does not exist.
-    </p>
-    <a routerLink="/items" class="text-blue-600">Go back to Item Overview</a>
-  </ng-template>
 </div>
