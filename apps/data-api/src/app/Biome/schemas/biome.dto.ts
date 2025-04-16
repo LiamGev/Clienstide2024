@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty, IsOptional, IsArray, IsMongoId } from 'class-validator';
+import { Enemy } from '../../enemy/schemas/enemy.schema';
 
 export class BiomeDto {
   @IsOptional()
@@ -20,5 +21,5 @@ export class BiomeDto {
   @IsMongoId({ each: true })
   @IsArray()
   @IsOptional()
-  commonEnemies?: string[]; // ObjectId's van enemies
+  commonEnemies?: Enemy[]; // ObjectId's van enemies
 }

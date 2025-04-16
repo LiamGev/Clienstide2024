@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
 import { Neo4jService } from '../neo4j/neo4j.service';
 import { userCypher } from '../user/neo4j/user.cypher';
 import { User as UserModel, UserDocument } from './schemas/user.schema';
@@ -47,29 +47,34 @@ export class UserService {
       
 
     // Update een gebruiker op basis van ID
-    async update(userId: string, updateData: Partial<User>): Promise<User> {
-        try {
-          const updatedUser = await this.userModel.findByIdAndUpdate(
-            userId,
-            updateData,
-            { new: true }
-          ).exec();
-      
-          if (!updatedUser) {
-            throw new HttpException('User not found', 404);
-          }
-      
-          await this.neo4jService.write(userCypher.updateUser, {
-            name: updatedUser.name,
-            email: updatedUser.email,
-          });
-      
-          return updatedUser;
-        } catch (error) {
-          console.log('Error updating user:', error);
-          throw new HttpException('Error updating user', 500);
+    async update(userId: string, updateData: Partial<User>, currentUserId: string): Promise<User> {
+      if (userId !== currentUserId) {
+        throw new ForbiddenException('You are not authorized to update this user');
+      }
+    
+      try {
+        const updatedUser = await this.userModel.findByIdAndUpdate(
+          userId,
+          updateData,
+          { new: true }
+        ).exec();
+    
+        if (!updatedUser) {
+          throw new HttpException('User not found', 404);
         }
+    
+        await this.neo4jService.write(userCypher.updateUser, {
+          name: updatedUser.name,
+          email: updatedUser.email,
+        });
+    
+        return updatedUser;
+      } catch (error) {
+        console.log('Error updating user:', error);
+        throw new HttpException('Error updating user', 500);
+      }
     }
+    
 
     async delete(userId: string): Promise<User> {
         try {
@@ -108,11 +113,11 @@ export class UserService {
 
     async getUserByUsername(email: string) {
         const user = await this.userModel.findOne({ email }).exec();
-        return { results: user };
+        return user;
     }
 
     async getUserById(id: string) {
         const user = await this.userModel.findById(id).exec();
-        return { results: user };
+        return user;
     }
 }

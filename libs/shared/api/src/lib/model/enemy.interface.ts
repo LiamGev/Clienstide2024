@@ -6,6 +6,6 @@ export interface Enemy {
     type: string;
     health: number; 
     damage: number;
-    class: string; 
+    class: string;   
     // imageurl: Url;
   }

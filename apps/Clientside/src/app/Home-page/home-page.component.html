@@ -6,76 +6,76 @@
     <title>Terraria Wiki - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-100 font-sans leading-normal tracking-normal">
+  <body class="bg-gray-100 font-sans leading-normal tracking-normal min-h-screen">
     <!-- Main Content Section -->
     <main class="container mx-auto px-4 py-8">
       <div class="text-center">
-        <h1 class="text-4xl font-bold text-gray-800 mb-4">
+        <h1 class="text-4xl font-extrabold text-gray-800 mb-4 drop-shadow-md">
           Welcome to the Terraria Wiki
         </h1>
-        <p class="text-lg text-gray-600 mb-6">
-          Explore our item database, and enemy information to enhance your
-          gameplay experience.
+        <p class="text-lg text-gray-600 mb-8">
+          Explore our item database, enemy information, and biomes to enhance your gameplay experience.
         </p>
 
         <!-- Call to Action Section -->
-        <div class="flex justify-center space-x-8">
+        <div class="flex flex-wrap justify-center gap-6">
           <a
             routerLink="/items"
-            class="bg-green-600 text-white py-2 px-6 rounded-full hover:bg-green-700 transition-all"
+            class="bg-green-600 text-white py-3 px-8 rounded-full shadow-md hover:bg-green-700 transition-all text-lg"
           >
             Explore Items
           </a>
           <a
             routerLink="/enemies"
-            class="bg-green-600 text-white py-2 px-6 rounded-full hover:bg-green-700 transition-all"
+            class="bg-green-600 text-white py-3 px-8 rounded-full shadow-md hover:bg-green-700 transition-all text-lg"
           >
             Explore Enemies
+          </a>
+          <a
+            routerLink="/biomes"
+            class="bg-green-600 text-white py-3 px-8 rounded-full shadow-md hover:bg-green-700 transition-all text-lg"
+          >
+            Explore Biomes
           </a>
         </div>
       </div>
 
       <!-- Featured Sections -->
-      <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-          <h3 class="text-xl font-semibold text-gray-800 mb-4">
-            Item Overview
-          </h3>
-          <p class="text-gray-600 mb-4">
-            View all items in Terraria, sorted by categories, rarity, and more.
-            Find detailed descriptions and information on how to use each item.
+      <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Item Overview -->
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-4">Item Overview</h3>
+          <p class="text-gray-600 mb-6">
+            View all Terraria items sorted by category and rarity. Find detailed descriptions and usage tips!
           </p>
-          <a routerLink="/items" class="text-blue-600 hover:text-blue-500"
-            >Learn more &rarr;</a
-          >
+          <a routerLink="/items" class="text-blue-600 hover:text-blue-500 font-semibold">Learn more →</a>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-          <h3 class="text-xl font-semibold text-gray-800 mb-4">
-            Enemy Overview
-          </h3>
-          <p class="text-gray-600 mb-4">
-            Discover all enemies in Terraria, their strengths, weaknesses, and
-            drop rates. Perfect for any player looking to face the game's
-            toughest foes.
+        <!-- Enemy Overview -->
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-4">Enemy Overview</h3>
+          <p class="text-gray-600 mb-6">
+            Discover enemies' strengths, weaknesses, and drop rates to prepare for any battle in Terraria.
           </p>
-          <a routerLink="/enemies" class="text-blue-600 hover:text-blue-500"
-            >Learn more &rarr;</a
-          >
+          <a routerLink="/enemies" class="text-blue-600 hover:text-blue-500 font-semibold">Learn more →</a>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-          <h3 class="text-xl font-semibold text-gray-800 mb-4">
-            About the Wiki
-          </h3>
-          <p class="text-gray-600 mb-4">
-            Learn more about the Terraria Wiki, its features, and how to
-            contribute to its growth. Join the community of passionate Terraria
-            players!
+        <!-- Biome Overview -->
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-4">Biome Overview</h3>
+          <p class="text-gray-600 mb-6">
+            Explore the different biomes of Terraria, their enemies, difficulty levels, and secrets.
           </p>
-          <a routerLink="/about" class="text-blue-600 hover:text-blue-500"
-            >Learn more &rarr;</a
-          >
+          <a routerLink="/biomes" class="text-blue-600 hover:text-blue-500 font-semibold">Learn more →</a>
+        </div>
+
+        <!-- About the Wiki -->
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-4">About the Wiki</h3>
+          <p class="text-gray-600 mb-6">
+            Learn about the Terraria Wiki and how you can contribute to make the best resource for all players.
+          </p>
+          <a routerLink="/about" class="text-blue-600 hover:text-blue-500 font-semibold">Learn more →</a>
         </div>
       </div>
     </main>

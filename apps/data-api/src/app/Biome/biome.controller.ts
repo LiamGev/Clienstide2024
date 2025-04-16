@@ -13,27 +13,27 @@ export class BiomeController {
     @UseGuards(AuthGuard)
     @Post()
     async createBiome(@Body() biome: Biome,@Request() req: any,) {
-      const currentUserId = req.user.sub; // ⬅️ User ID uit JWT halen
+      const currentUserId = req.user.sub;
       
       const biomeDto = {
         ...biome,
         commonEnemies: biome.commonEnemies.map((enemy: any) => enemy.toString()),
       };
     
-      return this.biomeService.create(biomeDto, currentUserId); // ⬅️ Nu mét userId
+      return this.biomeService.create(biomeDto, currentUserId);
     }
     
   
     @UseGuards(AuthGuard)
     @Get()
     async getAllBiomes() {
-      return this.biomeService.getAll();
+      return await this.biomeService.getAll();
     }
   
     @UseGuards(AuthGuard)
     @Patch(':id')
     async updateBiome(@Param('id') id: string,@Body() updateData: Partial<BiomeDto>,@Request() req: any,) {
-      const currentUserId = req.user.sub; // ⬅️ user id uit token
+      const currentUserId = req.user.sub;
       return this.biomeService.updateBiome(id, updateData, currentUserId);
     }
   
@@ -42,5 +42,11 @@ export class BiomeController {
     async deleteBiome(@Param('id') id: string,@Request() req: any,) {
       const currentUserId = req.user.sub;
       return this.biomeService.deleteBiome(id, currentUserId);
+    }
+
+    @UseGuards(AuthGuard)
+    @Get(':id')
+    async getBiomeById(@Param('id') id: string) {
+      return await this.biomeService.getBiomeById(id);
     }
 }

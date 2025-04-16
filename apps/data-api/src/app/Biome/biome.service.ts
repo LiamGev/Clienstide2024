@@ -17,15 +17,27 @@ export class BiomeService {
     private readonly neo4jService: Neo4jService,
   ) {}
 
-    async getAll(): Promise<{ results: BiomeDto[] }> {
+  async getAll(): Promise<BiomeDto[]> {
     const biomes = await this.biomeModel.find().populate('commonEnemies').exec();
-    const transformedBiomes = biomes.map(biome => ({
-      ...biome.toObject(),
-      commonEnemies: (biome.commonEnemies as unknown as EnemyDto[]).map(enemy => enemy._id),
-    }));
-
-    return { results: transformedBiomes };
+    
+    return biomes.map(biome => {
+      const biomeObj = biome.toObject();
+  
+      return {
+        ...biomeObj,
+        commonEnemies: (biomeObj.commonEnemies as any[]).map(enemy => ({
+          _id: enemy._id,
+          name: enemy.name,
+          type: enemy.type,
+          health: enemy.health,
+          damage: enemy.damage,
+          class: enemy.class,
+          createdBy: enemy.createdBy,
+        }))
+      };
+    });
   }
+  
 
   async getBiomeByName(name: string): Promise<{ results: BiomeDto }> {
     const biome = await this.biomeModel.findOne({ name }).populate('commonEnemies').exec();
@@ -37,7 +49,15 @@ export class BiomeService {
     return {
       results: {
         ...biome.toObject(),
-        commonEnemies: (biome.commonEnemies as unknown as EnemyDto[]).map(enemy => enemy._id.toString()),
+        commonEnemies: (biome.commonEnemies as unknown as EnemyDto[]).map(enemy => ({
+          _id: enemy._id,
+          name: enemy.name,
+          type: enemy.type,
+          health: enemy.health,
+          damage: enemy.damage,
+          class: enemy.class,
+          createdBy: enemy.createdBy,
+        })),
       },
     };
   }
@@ -160,6 +180,19 @@ export class BiomeService {
       biomeCypher.addSpawnRelation,
       { enemyName, biomeName }
     );
+  }
+
+  async getBiomeById(id: string): Promise<BiomeDto> {
+    const biome = await this.biomeModel.findById(id).populate('commonEnemies').exec();
+    
+    if (!biome) {
+      throw new HttpException('Biome not found', 404);
+    }
+  
+    return {
+      ...biome.toObject(),
+      commonEnemies: (biome.commonEnemies as any[]).map((enemy: any) => enemy._id.toString()),
+    };
   }
   
 }

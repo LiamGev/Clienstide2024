@@ -35,5 +35,18 @@ export const biomeCypher = {
         SET biome.name = $name, biome.description = $description, biome.difficulty = $difficulty
         RETURN biome
     `,
-  };
+
+    sharedEnemies: `
+    MATCH (b1:Biome)-[:SPAWNS]->(e:Enemy)<-[:SPAWNS]-(b2:Biome)
+    WHERE b1.name = $currentBiomeName AND b1 <> b2
+    RETURN b2.name AS RecommendedBiome, count(e) AS CommonEnemies
+    ORDER BY CommonEnemies DESC
+    LIMIT 5`,
+
+    AllitemsInBiome: `
+    MATCH (b:Biome)-[:SPAWNS]->(e:Enemy)-[:DROPS]->(i:Item)
+    WHERE b.name = $biomeName
+    RETURN DISTINCT i.name AS AvailableItem
+    `,
+};
   

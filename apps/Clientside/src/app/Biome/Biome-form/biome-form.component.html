@@ -1,0 +1,43 @@
+<div class="max-w-lg mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-semibold mb-4">{{ biome._id ? 'Update Biome' : 'Add New Biome' }}</h2>
+  
+    <form (ngSubmit)="onSubmit()" class="space-y-4">
+      <!-- Name Field -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Name</label>
+        <input type="text" [(ngModel)]="biome.name" name="name" required class="mt-1 block w-full border rounded" />
+      </div>
+  
+      <!-- Description Field -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea [(ngModel)]="biome.description" name="description" required class="mt-1 block w-full border rounded"></textarea>
+      </div>
+  
+      <!-- Difficulty Field -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Difficulty</label>
+        <input type="text" [(ngModel)]="biome.difficulty" name="difficulty" required class="mt-1 block w-full border rounded" />
+      </div>
+  
+    <!-- Common Enemies Field -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Enemy IDs (comma-separated)</label>
+        <input
+        type="text"
+        [(ngModel)]="enemyIds"
+        name="commonEnemies"
+        class="mt-1 block w-full border rounded"
+        placeholder="e.g. 12345abc,67890def"
+        />
+    </div>
+  
+    <!-- Submit Button -->
+    <div>
+        <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+        {{ biome._id ? 'Update' : 'Create' }}
+        </button>
+    </div>
+    </form>
+  </div>
+  

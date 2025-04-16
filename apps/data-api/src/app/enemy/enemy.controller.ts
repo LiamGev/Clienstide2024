@@ -34,4 +34,12 @@ export class EnemyController {
       const currentUserId = req.user.sub;  // HIER: user id ophalen
       return this.enemyService.delete(id, currentUserId);
     }
+
+    @UseGuards(AuthGuard)
+    @Get(':id')
+    async getEnemyById(@Param('id') id: string) {
+      const enemy = await this.enemyService.getEnemyById(id);
+      return enemy;
+    }
+
 }

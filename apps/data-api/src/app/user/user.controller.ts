@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards, Request} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { User } from '@avans-nx-workshop/shared/api';
@@ -16,9 +16,11 @@ export class UserController {
 
     @UseGuards(AuthGuard)
     @Patch(':id')
-    async updateUser(@Param('id') id: string,@Body() updateData: Partial<User>,) {
-      return this.userService.update(id, updateData);
+    async updateUser(@Param('id') id: string,@Body() updateData: Partial<User>,@Request() req: any) {
+      const currentUserId = req.user.sub;
+      return this.userService.update(id, updateData, currentUserId);
     }
+    
 
     @UseGuards(AuthGuard)
     @Delete(':id')
@@ -36,4 +38,11 @@ export class UserController {
     create(@Body() body: any) {
       return this.userService.create(body);
     }
+
+    @UseGuards(AuthGuard)
+    @Get(':id')
+    async getUserById(@Param('id') id: string) {
+      return this.userService.getUserById(id);
+    }
+
 }

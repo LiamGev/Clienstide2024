@@ -34,5 +34,13 @@ export const enemyCypher = {
         SET enemy.name = $name, enemy.type = $type, enemy.health = $health, enemy.damage = $damage, enemy.class = $class
         RETURN enemy
     `,
+
+    sharedItems: `// Vind Enemies die dezelfde Items droppen
+    MATCH (e1:Enemy)-[:DROPS]->(i:Item)<-[:DROPS]-(e2:Enemy)
+    WHERE e1.name = $currentEnemyName AND e1 <> e2
+    RETURN e2.name AS RecommendedEnemy, count(i) AS CommonItems
+    ORDER BY CommonItems DESC
+    LIMIT 5
+    `,
   };
   

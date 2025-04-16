@@ -16,7 +16,7 @@ export class AuthService {
     }
   
     const userResult = await this.userService.getUserByUsername(email);
-    const user = userResult.results;
+    const user = userResult;
   
     if (!user) {
       throw new BadRequestException('Invalid credentials (user not found)');

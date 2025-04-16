@@ -108,6 +108,21 @@ export class ItemService {
           console.log('Error deleting item:', error);
           throw new HttpException('Error deleting item', 500);
         }
-    }   
+  }
+  
+  async getItemById(itemId: string): Promise<Item> {
+    try {
+      const item = await this.itemModel.findById(itemId).exec();
+  
+      if (!item) {
+        throw new HttpException('Item not found', 404);
+      }
+  
+      return item;
+    } catch (error) {
+      console.log('Error fetching item by id:', error);
+      throw new HttpException('Error fetching item by id', 500);
+    }
+  }   
       
 }

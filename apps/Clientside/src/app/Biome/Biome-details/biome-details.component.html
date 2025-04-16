@@ -1,0 +1,59 @@
+<div class="max-w-2xl mx-auto mt-10" *ngIf="biome">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <div class="w-full h-60 bg-gray-200 flex items-center justify-center">
+        <img src="/default-biome.png" alt="Biome image" class="h-full object-cover" />
+      </div>
+  
+      <div class="p-6">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">{{ biome.name }}</h2>
+        <hr class="mb-6 border-gray-300" />
+  
+        <div class="space-y-4">
+          <p class="text-gray-700">
+            <span class="font-semibold">Description:</span> {{ biome.description }}
+          </p>
+  
+          <p class="text-gray-700">
+            <span class="font-semibold">Difficulty:</span> {{ biome.difficulty }}
+          </p>
+  
+          
+          <div *ngIf="enemies.length > 0" class="mt-6">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Common Enemies</h3>
+            <ul class="list-disc list-inside space-y-2">
+              <li *ngFor="let enemy of enemies">
+                <a [routerLink]="['/enemies', enemy._id]" class="text-blue-600 hover:text-blue-800 transition">
+                  {{ enemy.name }}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+  
+        <div class="mt-8 flex justify-between items-center flex-wrap gap-4">
+          <a
+            routerLink="/biomes"
+            class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
+          >
+            ← Back to Overview
+          </a>
+  
+          <div class="flex gap-4">
+            <a
+              [routerLink]="['/new-biome', biome._id]"
+              class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-all"
+            >
+              Edit
+            </a>
+            <button
+              (click)="onDelete(biome._id!)"
+              class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-all"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

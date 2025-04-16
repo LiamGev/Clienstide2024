@@ -1,58 +1,62 @@
-<div class="container mx-auto py-8">
-  <h1 class="text-3xl font-bold text-gray-800 mb-6">
-    {{ enemy?.name || 'Enemy Not Found' }}
-  </h1>
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="bg-white shadow-lg rounded-lg p-8 max-w-xl w-full">
+    <ng-container *ngIf="enemy; else notFound">
+      <!-- Enemy Image -->
+      <div class="flex justify-center mb-4">
+        <img src="/default-enemy.png" class="w-40 h-auto rounded shadow" />
+      </div>
 
-  <div *ngIf="enemy; else notFound">
-    <!-- Enemy Image -->
-    <div class="mb-6">
-      <!-- <img
-          [src]="enemy.imageUrl || 'assets/default-enemy.png'"
-          alt="{{ enemy.name }}"
-          class="w-full max-w-sm mx-auto rounded-lg shadow-md"
-        /> -->
-    </div>
+      <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
+        {{ enemy.name }}
+      </h1>
 
-    <!-- Enemy Details -->
-    <p class="text-lg text-gray-600 mb-4">Type: {{ enemy.type }}</p>
-    <p class="text-lg text-gray-600 mb-4">Health: {{ enemy.health }}</p>
-    <p class="text-lg text-gray-600 mb-4">Damage: {{ enemy.damage }}</p>
-    <p class="text-lg text-gray-600 mb-4">Class: {{ enemy.class }}</p>
+      <!-- Enemy Details -->
+      <div class="space-y-4">
+        <p class="text-gray-700">
+          <span class="font-semibold">Type:</span> {{ enemy.type }}
+        </p>
+        <p class="text-gray-700">
+          <span class="font-semibold">Health:</span> {{ enemy.health }}
+        </p>
+        <p class="text-gray-700">
+          <span class="font-semibold">Damage:</span> {{ enemy.damage }}
+        </p>
+        <p class="text-gray-700">
+          <span class="font-semibold">Class:</span> {{ enemy.class }}
+        </p>
+      </div>
 
-    <div class="mt-8 flex justify-start space-x-4">
-      <!-- Back Button -->
-      <button>
+      <!-- Action Buttons -->
+      <div class="mt-6 flex justify-between">
         <a
           routerLink="/enemies"
-          class="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 transition-all"
+          class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
         >
-          Back to Enemy Overview
+          Back
         </a>
-      </button>
-      <!-- Edit Button -->
-      <button>
+
         <a
           [routerLink]="['/new-enemy', enemy._id]"
-          class="bg-yellow-500 text-white py-2 px-6 rounded-full hover:bg-yellow-600 transition-all"
+          class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition"
         >
-          Edit Enemy
+          Edit
         </a>
-      </button>
-      <!-- Delete Button -->
-      <button
-        (click)="onDeleteEnemy()"
-        class="bg-red-600 text-white py-2 px-6 rounded-full hover:bg-red-700 transition-all"
-      >
-        Delete Enemy
-      </button>
-    </div>
-  </div>
 
-  <!-- Error message if enemy not found -->
-  <ng-template #notFound>
-    <p class="text-red-600">
-      Sorry, the enemy you are looking for does not exist.
-    </p>
-    <a routerLink="/enemies" class="text-blue-600">Go back to Enemy Overview</a>
-  </ng-template>
+        <button
+          (click)="onDeleteEnemy()"
+          class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition"
+        >
+          Delete
+        </button>
+      </div>
+    </ng-container>
+
+    <!-- Error template -->
+    <ng-template #notFound>
+      <div class="text-center text-red-600 mt-4">
+        <p>Sorry, the enemy you are looking for does not exist.</p>
+        <a routerLink="/enemies" class="text-blue-600 underline mt-2 inline-block">Go back to Enemy Overview</a>
+      </div>
+    </ng-template>
+  </div>
 </div>

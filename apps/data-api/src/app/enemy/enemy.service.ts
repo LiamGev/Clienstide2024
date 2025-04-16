@@ -118,4 +118,19 @@ export class EnemyService {
 
     return deletedEnemy;
   }
+
+  async getEnemyById(id: string): Promise<Enemy> {
+    try {
+      const enemy = await this.enemyModel.findById(id).populate('droppedItems').exec();
+  
+      if (!enemy) {
+        throw new HttpException('Enemy not found', 404);
+      }
+  
+      return enemy;
+    } catch (error) {
+      console.error('Error fetching enemy by ID:', error);
+      throw new HttpException('Error fetching enemy by ID', 500);
+    }
+  }
 }

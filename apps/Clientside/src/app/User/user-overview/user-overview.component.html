@@ -26,14 +26,14 @@
             *ngFor="let user of users"
             class="border-t hover:bg-gray-50 transition"
           >
-            <td class="px-6 py-4 text-sm text-gray-700">{{ user.id }}</td>
+            <td class="px-6 py-4 text-sm text-gray-700">{{ user._id }}</td>
             <td class="px-6 py-4 text-sm text-gray-700">{{ user.name }}</td>
             <td class="px-6 py-4 text-sm text-gray-700">{{ user.email }}</td>
             <td class="px-6 py-4 text-sm text-gray-700">{{ user.role }}</td>
             <td class="px-6 py-4">
               <a
                 class="text-blue-600 hover:text-blue-800 font-medium transition"
-                [routerLink]="['/users', user.id]"
+                [routerLink]="['/users', user._id]"
               >
                 View Details
               </a>

@@ -17,7 +17,7 @@ import { BiomeModule } from './Biome/biome.module';
 
 @Module({
   imports:[
-    MongooseModule.forRoot('mongodb://localhost:27017/Clientside'),
+    MongooseModule.forRoot(process.env.MONGO_CONN),
     Neo4jModule.forRoot({
       scheme: process.env.NEO4J_SCHEME as Neo4jScheme,
       host: process.env.NEO4J_HOST,

@@ -22,8 +22,11 @@
       "@avans-nx-workshop/shared/api": ["libs/shared/api/src/index.ts"],
       "@project/common": ["libs/frontend/common/src/index.ts"],
       "@project/features": ["libs/frontend/features/src/index.ts"],
-      "@project/ui": ["libs/frontend/ui/src/index.ts"],
+      "@project/frontend-services": [
+        "libs/frontend/frontend-services/src/index.ts"
+      ],
       "@project/libs/shared/api": ["libs/shared/api/src/index.ts"],
+      "@project/ui": ["libs/frontend/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

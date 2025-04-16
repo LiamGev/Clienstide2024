@@ -24,4 +24,7 @@ export class EnemyDto {
   @IsString()
   @IsNotEmpty()
   class: string;
+
+  @IsOptional()
+  createdBy: any;
 }

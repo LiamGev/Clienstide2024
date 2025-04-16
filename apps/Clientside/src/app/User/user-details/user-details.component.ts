@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'libs/shared/api/src/lib/model/user.interface';
-import { UserService } from 'libs/shared/api/src/lib/Services/user.service';
+import { UserService } from '@project/frontend-services';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 
