@@ -4,108 +4,105 @@
 name: Build and deploy frontend and backend app to Azure
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    name: Build and zip apps from /dist
-    steps:
-      - uses: actions/checkout@v4
+    build:
+        runs-on: ubuntu-latest
+        name: Build and zip apps from /dist
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                path: .
 
-      - name: Set up Node.js version
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18.x'
+            - name: Set up Node.js version
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '18.x'
 
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
-          # npm run test --if-present
+            - name: npm install, build, and test
+              run: |
+                  npm install
+                  npm run build --if-present
+                  # npm run test --if-present
 
-      - name: Zip artifacts for deployment
-        run: |
-          echo ${GITHUB_WORKSPACE}
+            - name: Zip artifacts for deployment
+              run: |
+                  echo ${GITHUB_WORKSPACE}
+                  cd ${GITHUB_WORKSPACE}/dist/apps/data-api/ && zip ${GITHUB_WORKSPACE}/data-api-release.zip ./* -r
+                  cd ${GITHUB_WORKSPACE}/dist/apps/Clientside/ && zip ${GITHUB_WORKSPACE}/Clientside-release.zip ./* -r
 
-          # Prepare and zip backend (data-api)
-          mkdir -p ${GITHUB_WORKSPACE}/build/data-api
-          cp -r ${GITHUB_WORKSPACE}/dist/apps/data-api/* ${GITHUB_WORKSPACE}/build/data-api/
-          cp ${GITHUB_WORKSPACE}/apps/data-api/package.json ${GITHUB_WORKSPACE}/build/data-api/
-          cd ${GITHUB_WORKSPACE}/build/data-api && zip ${GITHUB_WORKSPACE}/data-api-release.zip ./* -r
+            - name: Upload Clientside artifact for deployment job
+              uses: actions/upload-artifact@v4
+              with:
+                  name: Clientside
+                  path: Clientside-release.zip
 
-          # Prepare and zip frontend (Clientside)
-          cd ${GITHUB_WORKSPACE}/dist/apps/Clientside
-          zip ${GITHUB_WORKSPACE}/Clientside-release.zip ./* -r
+            - name: Upload data-api artifact for deployment job
+              uses: actions/upload-artifact@v4
+              with:
+                  name: data-api
+                  path: data-api-release.zip
 
-      - name: Upload Clientside artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: Clientside
-          path: Clientside-release.zip
+    deploy-my-app:
+        runs-on: ubuntu-latest
+        name: Deploy Angular Frontend
+        needs: build
+        environment:
+            name: 'Production'
 
-      - name: Upload data-api artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: data-api
-          path: data-api-release.zip
+        steps:
+            - name: Download artifact from build job
+              uses: actions/download-artifact@v4
+              with:
+                  name: Clientside
 
-  deploy-my-app:
-    runs-on: ubuntu-latest
-    name: Deploy Angular Frontend
-    needs: build
-    environment:
-      name: 'Production'
+            - name: Unzip artifact for deployment
+              run: unzip Clientside-release.zip
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: Clientside
+            - name: Deploy to static azure web app
+              id: builddeploy
+              uses: Azure/static-web-apps-deploy@v1
+              with:
+                  azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_CALM_GROUND_046085803 }}
+                  repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+                  action: 'upload'
+                  app_location: '/' # App source code path
+                  api_location: '' # Api source code path - optional
+                  output_location: 'dist/apps/Clientside/browser' # Built app content directory - optional
+                  github_id_token: ${{ steps.idtoken.outputs.result }}
 
-      - name: Unzip artifact for deployment
-        run: unzip Clientside-release.zip
+    deploy-data-api:
+        runs-on: ubuntu-latest
+        name: Deploy NestJs data-api backend
+        needs: build
+        environment:
+            name: 'Production'
+            url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-      - name: Deploy to static azure web app
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_CALM_GROUND_046085803 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: 'upload'
-          app_location: '/' # App source code path
-          api_location: 'apps/data-api' # Optional, not needed here
-          output_location: 'dist/apps/Clientside/browser'
-          github_id_token: ${{ steps.idtoken.outputs.result }}
+        steps:
+            - name: Download artifact from build job
+              uses: actions/download-artifact@v4
+              with:
+                  name: data-api
 
-  deploy-data-api:
-    runs-on: ubuntu-latest
-    name: Deploy NestJs data-api backend
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+            - name: Unzip artifact for deployment
+              run: unzip data-api-release.zip
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: data-api
+            - name: Move into correct working directory
+              run: cd ../.. 
 
-      - name: Unzip artifact for deployment
-        run: unzip data-api-release.zip
+            - name: Install dependencies
+              run: npm install
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'NodeAppClientside'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.NESTJS_PUBLISHPROFILE }}
-          package: .
+            - name: 'Deploy to Azure Web App'
+              id: deploy-to-webapp
+              uses: azure/webapps-deploy@v3
+              with:
+                  app-name: 'NodeAppClientside'
+                  slot-name: 'Production'
+                  publish-profile: ${{ secrets.NESTJS_PUBLISHPROFILE }}
+                  package: .
