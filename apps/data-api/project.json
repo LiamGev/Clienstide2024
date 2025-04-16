@@ -3,9 +3,6 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/data-api/src",
   "projectType": "application",
-  "scripts": {
-    "start": "node main.js"
-  },
   "tags": [],
   "targets": {
     "build": {

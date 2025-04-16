@@ -38,14 +38,6 @@ jobs:
                   cd ${GITHUB_WORKSPACE}/dist/apps/data-api/ && zip ${GITHUB_WORKSPACE}/data-api-release.zip ./* -r
                   cd ${GITHUB_WORKSPACE}/dist/apps/Clientside/ && zip ${GITHUB_WORKSPACE}/Clientside-release.zip ./* -r
 
-            - name: Debug Toon inhoud van data-api build folder
-              run: |
-                echo "📁 Inhoud van dist/apps/data-api:"
-                ls -la dist/apps/data-api
-
-                echo "📦 Inhoud van data-api-release.zip:"
-                unzip -l data-api-release.zip || echo "ZIP bestaat nog niet"
-
             - name: Upload Clientside artifact for deployment job
               uses: actions/upload-artifact@v4
               with:
@@ -115,4 +107,3 @@ jobs:
                   slot-name: 'Production'
                   publish-profile: ${{ secrets.NESTJS_PUBLISHPROFILE }}
                   package: .
-                  clean: true
