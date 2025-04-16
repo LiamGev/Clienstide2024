@@ -95,24 +95,27 @@ jobs:
             name: 'Production'
             url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-            steps:
-              - name: Download artifact from build job
-                uses: actions/download-artifact@v4
-                with:
+        steps:
+            - name: Download artifact from build job
+              uses: actions/download-artifact@v4
+              with:
                   name: data-api
 
-              - name: Unzip artifact
-                run: unzip data-api-release.zip -d api
+            - name: Unzip artifact for deployment
+              run: unzip data-api-release.zip -d api
+            
+            - name: Toon inhoud van map na unzip
+              run: ls -la
 
-              - name: Install dependencies
-                run: npm install
-                working-directory: ./api
+            - name: Install dependencies
+              run: npm install
+              working-directory: ./api
 
-              - name: 'Deploy to Azure Web App'
-                id: deploy-to-webapp
-                uses: azure/webapps-deploy@v3
-                with:
-                app-name: 'CSideApp'
-                slot-name: 'Production'
-                publish-profile: ${{ secrets.NESTJS_PUBLISHPROFILE }}
-                package: ./api
+            - name: 'Deploy to Azure Web App'
+              id: deploy-to-webapp
+              uses: azure/webapps-deploy@v3
+              with:
+                  app-name: 'CSideApp'
+                  slot-name: 'Production'
+                  publish-profile: ${{ secrets.NESTJS_PUBLISHPROFILE }}
+                  package: ./api
