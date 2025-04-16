@@ -114,4 +114,4 @@ jobs:
                   app-name: 'NodeAppClientside'
                   slot-name: 'Production'
                   publish-profile: ${{ secrets.NESTJS_PUBLISHPROFILE }}
-                  package: .
+                  package: data-api.zip
