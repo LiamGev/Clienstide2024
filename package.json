@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nx run-many -t build",
     "build:my-app": "nx run Clientside:build:production",
+    "build:data-api": "nx run data-api:build",
     "test": "nx run-many -t test"
   },
   "private": true,
