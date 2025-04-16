@@ -29,7 +29,7 @@ export class LoginComponent {
     onSubmit() {
       console.log('Email:', this.email);
       console.log('Password:', this.password);
-      this.http.post<any>('http://localhost:3000/api/auth/login', {
+      this.http.post<any>('https://nodeappcside-hjajhkhxdzagdyby.northeurope-01.azurewebsites.net/api/auth/login', {
         email: this.email,
         pass: this.password,
       }).subscribe({
