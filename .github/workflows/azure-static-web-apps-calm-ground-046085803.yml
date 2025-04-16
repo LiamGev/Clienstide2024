@@ -76,7 +76,7 @@ jobs:
                   app_build_command: 'npm run build:my-app'
                   app_location: '/' # App source code path
                   api_location: '' # Api source code path - optional
-                  output_location: 'dist/apps/Clientside/browser' # Built app content directory - optional
+                  output_location: 'dist/apps/Clientside' # Built app content directory - optional
                   github_id_token: ${{ steps.idtoken.outputs.result }}
                   skip_app_build: true
 
@@ -97,13 +97,9 @@ jobs:
             - name: Unzip artifact for deployment
               run: unzip data-api-release.zip
 
-            - name: Move into correct working directory
-              run: cd ../.. 
-
             - name: Install dependencies
               run: npm ci
               working-directory: .
-
 
             - name: 'Deploy to Azure Web App'
               id: deploy-to-webapp
