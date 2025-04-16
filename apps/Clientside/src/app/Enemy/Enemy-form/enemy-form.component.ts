@@ -14,7 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrls: ['./enemy-form.component.css'],
 })
 export class EnemyFormComponent implements OnInit {
-  enemy: Enemy = { _id: '', name: '', health: 0, damage: 0, class: '', type: '' };
+  enemy: Partial<Enemy> = { name: '', health: 0, damage: 0, class: '', type: '' };
 
   constructor(
     private enemyService: EnemyService,
@@ -35,7 +35,7 @@ export class EnemyFormComponent implements OnInit {
         this.router.navigate(['/enemies']);
       });
     } else {
-      this.enemyService.createEnemy(this.enemy).subscribe(() => {
+      this.enemyService.createEnemy(this.enemy as Enemy).subscribe(() => {
         this.router.navigate(['/enemies']);
       });
     }
