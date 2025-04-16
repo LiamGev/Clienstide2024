@@ -114,4 +114,4 @@ jobs:
                   app-name: 'CSideApp'
                   slot-name: 'Production'
                   publish-profile: ${{ secrets.NESTJS_PUBLISHPROFILE }}
-                  package: .
+                  package: ./dist/apps/data-api
