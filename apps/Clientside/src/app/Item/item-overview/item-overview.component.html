@@ -1,51 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Item Overview</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-100 font-sans leading-normal tracking-normal">
-    <main class="container mx-auto px-4 py-6">
-      <h1 class="text-3xl font-bold text-gray-800 mb-4">Item Overview</h1>
-      <div class="flex justify-end mb-6">
-        <a
-          class="bg-green-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-700 transition"
-          [routerLink]="['/new-item']"
-        >
-          <i class="fa fa-plus mr-2"></i>Add Item
-        </a>
-      </div>
+<main class="container mx-auto px-6 py-8 max-w-7xl">
+  <h1 class="text-4xl font-bold text-white mb-6">Item Overview</h1>
 
-      <div class="bg-white shadow-md rounded-lg overflow-hidden">
-        <table class="table-auto w-full text-left border-collapse">
-          <thead class="bg-green-600 text-white">
-            <tr>
-              <th class="px-4 py-3">Item ID</th>
-              <th class="px-4 py-3">Name</th>
-              <th class="px-4 py-3">Description</th>
-              <th class="px-4 py-3">Rarity</th>
-              <th class="px-4 py-3">Drop Chance</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Iterate over the items array -->
-            <tr *ngFor="let item of items" class="hover:bg-gray-100">
-              <td class="px-4 py-3 border-t">{{ item._id }}</td>
-              <td class="px-4 py-3 border-t">
-                <!-- Dynamic item link -->
-                <a [routerLink]="['/items', item._id]" class="text-blue-600 hover:text-blue-800">
-                  {{ item.name }}
-                </a>
-              </td>
-              <td class="px-4 py-3 border-t">{{ item.description }}</td>
-              <td class="px-4 py-3 border-t">{{ item.rarity }}</td>
-              <td class="px-4 py-3 border-t">{{ item.dropChance }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
-  </body>
-</html>
+  <div class="flex justify-end mb-6">
+    <a
+      class="bg-green-600 text-white px-5 py-3 rounded-md shadow-md hover:bg-green-700 transition"
+      [routerLink]="['/new-item']"
+    >
+      + Add Item
+    </a>
+  </div>
+
+  <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+    <table class="min-w-full table-auto text-left border-collapse">
+      <thead class="bg-green-600 text-white">
+        <tr>
+          <th class="px-6 py-4 w-48">Item ID</th>
+          <th class="px-6 py-4 w-48">Name</th>
+          <th class="px-6 py-4">Description</th>
+          <th class="px-6 py-4 w-32">Rarity</th>
+          <th class="px-6 py-4 w-32">Drop Chance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items" class="hover:bg-gray-100 border-t">
+          <td class="px-6 py-4 text-sm text-gray-700 break-words">{{ item._id }}</td>
+          <td class="px-6 py-4 text-blue-600 font-semibold">
+            <a [routerLink]="['/items', item._id]" class="hover:underline">
+              {{ item.name }}
+            </a>
+          </td>
+          <td class="px-6 py-4 text-gray-700 whitespace-pre-wrap max-w-xl">
+            {{ item.description }}
+          </td>
+          <td class="px-6 py-4 text-gray-600">{{ item.rarity }}</td>
+          <td class="px-6 py-4 text-gray-600">{{ item.dropChance }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>

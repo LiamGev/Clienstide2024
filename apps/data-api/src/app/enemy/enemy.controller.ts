@@ -11,7 +11,7 @@ export class EnemyController {
     @UseGuards(AuthGuard)
     @Post()
     async createEnemy(@Body() enemy: Enemy,@Request() req: any,) {
-      const currentUserId = req.user.sub;  // ⬅️ Hier haal je user id
+      const currentUserId = req.user.sub; 
       return this.enemyService.create(enemy, currentUserId);
     }
 
@@ -24,14 +24,14 @@ export class EnemyController {
     @UseGuards(AuthGuard)
     @Patch(':id')
     async updateEnemy(@Param('id') id: string,@Body() updateData: Partial<Enemy>,@Request() req: any,) {
-      const currentUserId = req.user.sub;  // HIER: user id ophalen
+      const currentUserId = req.user.sub;
       return this.enemyService.update(id, updateData, currentUserId);
     }
 
     @UseGuards(AuthGuard)
     @Delete(':id')
     async deleteEnemy(@Param('id') id: string,@Request() req: any,) {
-      const currentUserId = req.user.sub;  // HIER: user id ophalen
+      const currentUserId = req.user.sub; 
       return this.enemyService.delete(id, currentUserId);
     }
 

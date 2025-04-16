@@ -15,7 +15,7 @@ export class ItemService {
     async create(item: Item, currentUserId: string): Promise<Item> {
         try {
           const itemWithCreator = {
-            ...item, createdBy: currentUserId, // <<== Hier voeg je de ingelogde user toe!
+            ...item, createdBy: currentUserId,
           };
             console.log('User ID:', currentUserId);
             console.log('Item to save:', itemWithCreator);
@@ -109,7 +109,7 @@ export class ItemService {
           throw new HttpException('Error deleting item', 500);
         }
   }
-  
+
   async getItemById(itemId: string): Promise<Item> {
     try {
       const item = await this.itemModel.findById(itemId).exec();

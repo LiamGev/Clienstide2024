@@ -1,62 +1,65 @@
-<div class="flex justify-center items-center min-h-screen bg-gray-100">
-  <div class="bg-white shadow-lg rounded-lg p-8 max-w-xl w-full">
-    <ng-container *ngIf="enemy; else notFound">
-      <!-- Enemy Image -->
-      <div class="flex justify-center mb-4">
-        <img src="/default-enemy.png" class="w-40 h-auto rounded shadow" />
-      </div>
-
-      <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
-        {{ enemy.name }}
-      </h1>
-
-      <!-- Enemy Details -->
-      <div class="space-y-4">
-        <p class="text-gray-700">
-          <span class="font-semibold">Type:</span> {{ enemy.type }}
-        </p>
-        <p class="text-gray-700">
-          <span class="font-semibold">Health:</span> {{ enemy.health }}
-        </p>
-        <p class="text-gray-700">
-          <span class="font-semibold">Damage:</span> {{ enemy.damage }}
-        </p>
-        <p class="text-gray-700">
-          <span class="font-semibold">Class:</span> {{ enemy.class }}
-        </p>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="mt-6 flex justify-between">
-        <a
-          routerLink="/enemies"
-          class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
-        >
-          Back
-        </a>
-
-        <a
-          [routerLink]="['/new-enemy', enemy._id]"
-          class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition"
-        >
-          Edit
-        </a>
-
-        <button
-          (click)="onDeleteEnemy()"
-          class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition"
-        >
-          Delete
-        </button>
-      </div>
-    </ng-container>
-
-    <!-- Error template -->
-    <ng-template #notFound>
-      <div class="text-center text-red-600 mt-4">
-        <p>Sorry, the enemy you are looking for does not exist.</p>
-        <a routerLink="/enemies" class="text-blue-600 underline mt-2 inline-block">Go back to Enemy Overview</a>
-      </div>
-    </ng-template>
+  <div class="flex justify-center items-center min-h-screen">
+    <div class="bg-white bg-opacity-90 backdrop-blur-md shadow-lg rounded-lg p-8 max-w-xl w-full">
+      <ng-container *ngIf="enemy; else notFound">
+        <!-- Enemy Image -->
+        <div class="flex justify-center mb-4">
+          <img src="/default-enemy.png" class="w-40 h-auto rounded shadow" />
+        </div>
+  
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
+          {{ enemy.name }}
+        </h1>
+  
+        <!-- Enemy Details -->
+        <div class="space-y-4">
+          <p class="text-gray-700">
+            <span class="font-semibold">Type:</span> {{ enemy.type }}
+          </p>
+          <p class="text-gray-700">
+            <span class="font-semibold">Health:</span> {{ enemy.health }}
+          </p>
+          <p class="text-gray-700">
+            <span class="font-semibold">Damage:</span> {{ enemy.damage }}
+          </p>
+          <p class="text-gray-700">
+            <span class="font-semibold">Class:</span> {{ enemy.class }}
+          </p>
+        </div>
+  
+        <!-- Action Buttons -->
+        <div class="mt-6 flex justify-between">
+          <a
+            routerLink="/enemies"
+            class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+          >
+            Back
+          </a>
+  
+          <a
+            [routerLink]="['/new-enemy', enemy._id]"
+            class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition"
+          >
+            Edit
+          </a>
+  
+          <button
+            (click)="onDeleteEnemy()"
+            class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition"
+          >
+            Delete
+          </button>
+        </div>
+      </ng-container>
+  
+      <!-- Error template -->
+      <ng-template #notFound>
+        <div class="text-center text-red-600 mt-4">
+          <p>Sorry, the enemy you are looking for does not exist.</p>
+          <a routerLink="/enemies" class="text-blue-600 underline mt-2 inline-block">
+            Go back to Enemy Overview
+          </a>
+        </div>
+      </ng-template>
+    </div>
   </div>
-</div>
+  
