@@ -1,46 +1,42 @@
-<div class="container mx-auto mt-10 px-4">
-    <h2 class="text-2xl font-semibold mb-6 text-gray-800">User Overview</h2>
-  
-    <div class="flex justify-end mb-6">
-      <a
-        class="bg-green-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-700 transition"
-        [routerLink]="['/register']"
-      >
-        <i class="fa fa-plus mr-2"></i>Add User
-      </a>
-    </div>
-  
-    <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md">
-      <table class="min-w-full bg-white">
-        <thead>
-          <tr class="bg-gray-100 text-left">
-            <th class="px-6 py-4 text-sm font-medium text-gray-600">ID</th>
-            <th class="px-6 py-4 text-sm font-medium text-gray-600">Name</th>
-            <th class="px-6 py-4 text-sm font-medium text-gray-600">Email</th>
-            <th class="px-6 py-4 text-sm font-medium text-gray-600">Role</th>
-            <th class="px-6 py-4 text-sm font-medium text-gray-600">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            *ngFor="let user of users"
-            class="border-t hover:bg-gray-50 transition"
-          >
-            <td class="px-6 py-4 text-sm text-gray-700">{{ user._id }}</td>
-            <td class="px-6 py-4 text-sm text-gray-700">{{ user.name }}</td>
-            <td class="px-6 py-4 text-sm text-gray-700">{{ user.email }}</td>
-            <td class="px-6 py-4 text-sm text-gray-700">{{ user.role }}</td>
-            <td class="px-6 py-4">
-              <a
-                class="text-blue-600 hover:text-blue-800 font-medium transition"
-                [routerLink]="['/users', user._id]"
-              >
-                View Details
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+<main class="container mx-auto px-6 py-8 max-w-7xl">
+  <h1 class="text-4xl font-bold text-white mb-6">User Overview</h1>
+
+  <div class="flex justify-end mb-6">
+    <a
+      class="bg-green-600 text-white px-5 py-3 rounded-md shadow-md hover:bg-green-700 transition"
+      [routerLink]="['/register']"
+    >
+      + Add User
+    </a>
   </div>
-  
+
+  <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+    <table class="min-w-full table-auto text-left border-collapse">
+      <thead class="bg-green-600 text-white">
+        <tr>
+          <th class="px-6 py-4 w-64">ID</th>
+          <th class="px-6 py-4 w-48">Name</th>
+          <th class="px-6 py-4 w-64">Email</th>
+          <th class="px-6 py-4 w-32">Role</th>
+          <th class="px-6 py-4 w-32">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users" class="hover:bg-gray-100 border-t">
+          <td class="px-6 py-4 text-sm text-gray-700 break-words">{{ user._id }}</td>
+          <td class="px-6 py-4 text-gray-800 font-medium">{{ user.name }}</td>
+          <td class="px-6 py-4 text-gray-700">{{ user.email }}</td>
+          <td class="px-6 py-4 text-gray-700">{{ user.role }}</td>
+          <td class="px-6 py-4">
+            <a
+              [routerLink]="['/users', user._id]"
+              class="text-blue-600 font-semibold hover:underline"
+            >
+              View Details
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>

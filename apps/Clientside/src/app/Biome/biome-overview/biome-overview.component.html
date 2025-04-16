@@ -1,32 +1,35 @@
-<div class="container mx-auto mt-10">
-    <h2 class="text-3xl font-semibold mb-6">Biome Overview</h2>
+<main class="container mx-auto px-6 py-8 max-w-7xl">
+    <h1 class="text-4xl font-bold text-white mb-6">Biome Overview</h1>
   
     <div class="flex justify-end mb-6">
       <a
         routerLink="/new-biome"
-        class="bg-green-600 text-white px-4 py-2 rounded-md shadow hover:bg-green-700"
+        class="bg-green-600 text-white px-5 py-3 rounded-md shadow-md hover:bg-green-700 transition"
       >
         + Add Biome
       </a>
     </div>
   
-    <div class="bg-white shadow-md rounded-lg">
-      <table class="table-auto w-full text-left border-collapse">
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+      <table class="min-w-full table-auto text-left border-collapse">
         <thead class="bg-green-600 text-white">
           <tr>
-            <th class="px-4 py-2">Name</th>
-            <th class="px-4 py-2">Description</th>
-            <th class="px-4 py-2">Difficulty</th>
-            <th class="px-4 py-2">Details</th>
+            <th class="px-6 py-4 w-48">Name</th>
+            <th class="px-6 py-4">Description</th>
+            <th class="px-6 py-4 w-32">Difficulty</th>
+            <th class="px-6 py-4 w-32">Details</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let biome of biomes" class="hover:bg-gray-100">
-            <td class="px-4 py-2">{{ biome.name }}</td>
-            <td class="px-4 py-2">{{ biome.description }}</td>
-            <td class="px-4 py-2">{{ biome.difficulty }}</td>
-            <td class="px-4 py-2">
-              <a [routerLink]="['/biomes', biome._id]" class="text-blue-600 hover:underline">
+          <tr *ngFor="let biome of biomes" class="hover:bg-gray-100 border-t">
+            <td class="px-6 py-4 text-gray-800 font-medium">{{ biome.name }}</td>
+            <td class="px-6 py-4 text-gray-700 whitespace-pre-wrap max-w-xl">{{ biome.description }}</td>
+            <td class="px-6 py-4 text-gray-600">{{ biome.difficulty }}</td>
+            <td class="px-6 py-4">
+              <a
+                [routerLink]="['/biomes', biome._id]"
+                class="text-blue-600 font-semibold hover:underline"
+              >
                 View Details
               </a>
             </td>
@@ -34,5 +37,5 @@
         </tbody>
       </table>
     </div>
-  </div>
+  </main>
   

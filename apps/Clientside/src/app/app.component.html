@@ -1,36 +1,46 @@
-<nav class="bg-green-600 text-white shadow-lg">
-  <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-    <!-- Logo -->
-    <div class="text-xl font-semibold flex items-center space-x-4">
-      <a routerLink="/" class="hover:text-blue-300">
-        <img src="/NewPromoLogo.png" class="w-32 h-auto" />
-      </a>
-    </div>
+<div class="min-h-screen bg-cover bg-center relative" style="background-image: url('default-background.png');">
+  <!-- Donkere overlay zodat alles leesbaar blijft -->
+  <div class="absolute inset-0 bg-black bg-opacity-50 z-0"></div>
 
-    <!-- Navigation Links -->
-    <ul class="flex space-x-6 items-center">
-      <!-- Overviews only if logged in -->
-      <ng-container *ngIf="isLoggedIn()">
-        <li><a routerLink="/users" class="hover:text-blue-300">User Overview</a></li>
-        <li><a routerLink="/items" class="hover:text-blue-300">Item Overview</a></li>
-        <li><a routerLink="/enemies" class="hover:text-blue-300">Enemy Overview</a></li>
-        <li><a routerLink="/biomes" class="hover:text-blue-300">Biome Overview</a></li>
-      </ng-container>
+  <!-- Content laag boven de achtergrond -->
+  <div class="relative z-10">
+    <!-- Navbar -->
+    <nav class="bg-green-600 text-white shadow-lg">
+      <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <!-- Logo -->
+        <div class="text-xl font-semibold flex items-center space-x-4">
+          <a routerLink="/" class="hover:text-blue-300">
+            <img src="/NewPromoLogo.png" class="w-32 h-auto" />
+          </a>
+        </div>
 
-      <!-- Always visible -->
-      <li><a routerLink="/about" class="hover:text-blue-300">About Page</a></li>
+        <!-- Navigation Links -->
+        <ul class="flex space-x-6 items-center">
+          <!-- Overviews only if logged in -->
+          <ng-container *ngIf="isLoggedIn()">
+            <li><a routerLink="/users" class="hover:text-blue-300">User Overview</a></li>
+            <li><a routerLink="/items" class="hover:text-blue-300">Item Overview</a></li>
+            <li><a routerLink="/enemies" class="hover:text-blue-300">Enemy Overview</a></li>
+            <li><a routerLink="/biomes" class="hover:text-blue-300">Biome Overview</a></li>
+          </ng-container>
 
-      <!-- Login/Logout -->
-      <li *ngIf="!isLoggedIn()" class="nav-item">
-        <a routerLink="/login" class="hover:text-blue-300">Login</a>
-      </li>
-      <li *ngIf="isLoggedIn()" class="nav-item">
-        <button (click)="logout()" class="hover:text-blue-300 transition" style="cursor: pointer;">
-          Logout
-        </button>
-      </li>
-    </ul>
+          <!-- Always visible -->
+          <li><a routerLink="/about" class="hover:text-blue-300">About Page</a></li>
+
+          <!-- Login/Logout -->
+          <li *ngIf="!isLoggedIn()" class="nav-item">
+            <a routerLink="/login" class="hover:text-blue-300">Login</a>
+          </li>
+          <li *ngIf="isLoggedIn()" class="nav-item">
+            <button (click)="logout()" class="hover:text-blue-300 transition" style="cursor: pointer;">
+              Logout
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Routed pages -->
+    <router-outlet></router-outlet>
   </div>
-</nav>
-
-<router-outlet></router-outlet>
+</div>
