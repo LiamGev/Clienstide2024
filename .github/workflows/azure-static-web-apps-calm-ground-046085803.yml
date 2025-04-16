@@ -93,11 +93,13 @@ jobs:
               with:
                   name: data-api
 
-            - name: Unzip artifact for deployment
-              run: unzip data-api-release.zip
+            - name: Unzip artifact to correct folder
+              run: unzip data-api-release.zip -d backend
 
             - name: Install dependencies
+              working-directory: backend
               run: npm install
+
 
             - name: 'Deploy to Azure Web App'
               id: deploy-to-webapp
@@ -106,4 +108,4 @@ jobs:
                   app-name: 'NodeAppCside'
                   slot-name: 'Production'
                   publish-profile: ${{ secrets.NESTJS_PUBLISHPROFILE }}
-                  package: ./data-api-release.zip
+                  package: ./backend
