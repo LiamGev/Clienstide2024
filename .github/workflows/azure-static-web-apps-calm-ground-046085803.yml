@@ -95,9 +95,6 @@ jobs:
             - name: Move into correct working directory
               run: cd ../.. 
 
-            - name: Install dependencies
-              run: npm install
-
             - name: 'Deploy to Azure Web App'
               id: deploy-to-webapp
               uses: azure/webapps-deploy@v3
