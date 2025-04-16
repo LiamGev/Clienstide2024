@@ -5,7 +5,7 @@
   "projectType": "application",
   "tags": [],
   "script": {
-    "start": "node dist/src/main.js"
+    "start": "node dist/main.js"
   },
   "targets": {
     "build": {
