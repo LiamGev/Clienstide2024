@@ -1,11 +1,6 @@
-export * from '../src';
 export * from './lib/model/user.credentials';
 export * from './lib/model/user.interface';
 export * from './lib/model/api-response.interface';
 export * from './lib/model/biome.interface';
 export * from './lib/model/enemy.interface';
 export * from './lib/model/item.interface';
-// export * from '../../../frontend/frontend-services/src/lib/Services/biome.service';
-// export * from '../../../frontend/frontend-services/src/lib/Services/enemy.service';
-// export * from '../../../frontend/frontend-services/src/lib/Services/item.service';
-// export * from '../../../frontend/frontend-services/src/lib/Services/user.service';

@@ -1,6 +1,7 @@
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
+    "declaration": true,
     "module": "commonjs",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -10,13 +11,6 @@
     "noPropertyAccessFromIndexSignature": true
   },
   "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+  "include": ["../../shared/api/src/**/*.ts", ],
+
 }

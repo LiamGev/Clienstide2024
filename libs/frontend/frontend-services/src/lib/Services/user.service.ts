@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { User } from '@avans-nx-workshop/shared/api'; // jouw model
+import { User } from '@project/libs/shared/api'; // jouw model
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Delete, Param, UseGuards, Request } from '@nestjs/common';
 import { ItemService } from './item.service';
-import { Item } from '@avans-nx-workshop/shared/api';
+import { Item } from '@project/libs/shared/api';
 import { AuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('item')

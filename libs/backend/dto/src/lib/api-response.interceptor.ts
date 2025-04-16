@@ -1,4 +1,4 @@
-import { APIResponse } from '../../../../shared/api/src/lib/model/api-response.interface';
+import { APIResponse } from '@project/libs/shared/api';
 
 import {
     Injectable,

@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards, Request } from '@nestjs/common';
 import { Body, Post, Patch, Delete, Param } from '@nestjs/common';
 import { EnemyService } from './enemy.service';
-import { Enemy } from '@avans-nx-workshop/shared/api';
+import { Enemy } from '@project/libs/shared/api';
 import { AuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('enemy')

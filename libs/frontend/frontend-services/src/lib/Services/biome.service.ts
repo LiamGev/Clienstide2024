@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { Biome as BiomeDto } from '@avans-nx-workshop/shared/api';
+import { Biome as BiomeDto } from '@project/libs/shared/api';
 
 @Injectable({
   providedIn: 'root'

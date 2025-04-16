@@ -6,7 +6,7 @@ import { Enemy as enemyModel, EnemyDocument } from './schemas/enemy.schema';
 import { Neo4jService } from '../neo4j/neo4j.service';
 import { enemyCypher } from './neo4j/enemy.cypher';
 import { itemCypher } from '../item/neo4j/item.cypher';
-import { Enemy } from '@avans-nx-workshop/shared/api';
+import { Enemy } from '@project/libs/shared/api';
 
 @Injectable()
 export class EnemyService {

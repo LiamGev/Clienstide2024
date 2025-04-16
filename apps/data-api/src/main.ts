@@ -7,7 +7,7 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
-import { ApiResponseInterceptor } from '../../../libs/backend/dto/src/lib/api-response.interceptor';
+import { ApiResponseInterceptor } from '@project/backend-dto';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

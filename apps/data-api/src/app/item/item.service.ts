@@ -1,4 +1,4 @@
-import { Item } from '@avans-nx-workshop/shared/api';
+import { Item } from '@project/libs/shared/api';
 import { HttpException, Injectable } from '@nestjs/common';
 import { Item as ItemModel, ItemDocument} from './schemas/item.schema';
 import { InjectModel } from '@nestjs/mongoose';

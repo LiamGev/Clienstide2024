@@ -1,5 +1,5 @@
 {
-  "name": "dto",
+  "name": "@project/backend-dto",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/backend/dto/src",
   "projectType": "library",
