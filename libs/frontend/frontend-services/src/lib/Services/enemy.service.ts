@@ -8,7 +8,7 @@ import { Enemy } from '@project/libs/shared/api'; // jouw model
 })
 export class EnemyService {
 
-  private apiUrl = 'http://localhost:3000/api/enemy';
+  private apiUrl = 'https://nodeappcside-hjajhkhxdzagdyby.northeurope-01.azurewebsites.net/api/enemy';
 
   constructor(private http: HttpClient) {}
 

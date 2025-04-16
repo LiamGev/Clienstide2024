@@ -7,7 +7,7 @@ import { Biome as BiomeDto } from '@project/libs/shared/api';
   providedIn: 'root'
 })
 export class BiomeService {
-  private apiUrl = 'http://localhost:3000/api/biome';
+  private apiUrl = 'https://nodeappcside-hjajhkhxdzagdyby.northeurope-01.azurewebsites.net/api/biome';
 
   constructor(private http: HttpClient) {}
 

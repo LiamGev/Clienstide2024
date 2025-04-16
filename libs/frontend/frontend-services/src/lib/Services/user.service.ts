@@ -7,7 +7,7 @@ import { User } from '@project/libs/shared/api'; // jouw model
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:3000/api/user';
+  private apiUrl = 'https://nodeappcside-hjajhkhxdzagdyby.northeurope-01.azurewebsites.net/api/user';
 
   constructor(private http: HttpClient) {}
 

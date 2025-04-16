@@ -7,7 +7,7 @@ import { Item } from '@project/libs/shared/api';
   providedIn: 'root'
 })
 export class ItemService {
-  private apiUrl = 'http://localhost:3000/api/item';
+  private apiUrl = 'https://nodeappcside-hjajhkhxdzagdyby.northeurope-01.azurewebsites.net/api/item';
 
   constructor(private http: HttpClient) {}
 
