@@ -93,32 +93,26 @@ jobs:
         needs: build
         environment:
             name: 'Production'
+            url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
         steps:
             - name: Download artifact from build job
               uses: actions/download-artifact@v4
               with:
                   name: data-api
-                  path: ./tmp
 
-            - name: Unzip artifact to backend folder
-              run: |
-                mkdir backend
-                unzip ./tmp/data-api-release.zip -d backend
-
-            - name: Debug - toon inhoud van backend map
-              run: ls -la backend
+            - name: Unzip artifact for deployment
+              run: unzip data-api-release.zip
 
             - name: Install dependencies
               run: npm install
-              working-directory: backend
 
-            - name: Deploy to Azure Web App
+            - name: 'Deploy to Azure Web App'
               id: deploy-to-webapp
               uses: azure/webapps-deploy@v3
               with:
                   app-name: 'CSideApp'
                   slot-name: 'Production'
                   publish-profile: ${{ secrets.NESTJS_PUBLISHPROFILE }}
-                  package: ./backend/
-                  clean: true # Optional: Clean the destination folder before deployment
+                  package: .
+                  clean: true
