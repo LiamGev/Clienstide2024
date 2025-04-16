@@ -4,6 +4,9 @@
   "sourceRoot": "apps/data-api/src",
   "projectType": "application",
   "tags": [],
+  "script": {
+    "start": "node dist/main.js"
+  },
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
