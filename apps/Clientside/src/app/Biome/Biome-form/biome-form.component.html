@@ -51,8 +51,8 @@
           <input
             type="checkbox"
             [value]="enemy._id"
-            [checked]="isSelected(enemy._id)"
-            (change)="onEnemyToggle(enemy._id, $event)"
+            [checked]="isSelected(enemy._id!)"
+            (change)="onEnemyToggle(enemy._id!, $event)"            
             class="mr-2"
           />
           {{ enemy.name }}
