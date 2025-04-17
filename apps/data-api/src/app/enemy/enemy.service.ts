@@ -124,12 +124,17 @@ export class EnemyService {
     let droppedItems: Item[] | undefined = undefined;
 
     if (updateData.droppedItems) {
+      const itemIds = updateData.droppedItems.map((i: any) =>
+        typeof i === 'string' ? i : i._id
+      );
+    
       const itemDocs = await this.itemModel.find({
-        _id: { $in: updateData.droppedItems }
+        _id: { $in: itemIds }
       }).lean();
+    
       droppedItems = itemDocs.map(item => ({
         ...item,
-        rarity: item.rarity as Rarity, 
+        rarity: item.rarity as Rarity,
       }));
     }
 

@@ -53,16 +53,24 @@ export class EnemyFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+    const payload = {
+      ...this.enemy,
+      droppedItems: (this.enemy.droppedItems ?? [])
+        .map(item => (typeof item === 'string' ? item : item._id))
+        .filter((item): item is string => item !== undefined),
+    };
+  
     if (this.enemy._id) {
-      this.enemyService.updateEnemy(this.enemy._id, this.enemy).subscribe(() => {
+      this.enemyService.updateEnemy(this.enemy._id, payload).subscribe(() => {
         this.router.navigate(['/enemies']);
       });
     } else {
-      this.enemyService.createEnemy(this.enemy as Enemy).subscribe(() => {
+      this.enemyService.createEnemy(payload as Enemy).subscribe(() => {
         this.router.navigate(['/enemies']);
       });
     }
   }
+  
 
   onItemToggle(itemId: string, event: Event): void {
     const input = event.target as HTMLInputElement;
