@@ -26,24 +26,21 @@
           </p>
           <p class="text-gray-700">
             <span class="font-semibold">Dropped Items:</span>
-            <ng-container *ngIf="enemy.droppedItems?.length; else noDrops">
+            <span *ngIf="enemy.droppedItems?.length; else noDrops">
               <ul class="list-disc list-inside mt-1">
                 <li *ngFor="let item of enemy.droppedItems">
-                  <a
-                    *ngIf="item?._doc"
-                    [routerLink]="['/items', item._doc._id]"
-                    class="text-blue-600 hover:underline"
-                  >
-                    {{ item._doc.name }}
+                  <a [routerLink]="['/items', item._id]" class="text-blue-600 hover:underline">
+                    {{ item.name }}
                   </a>
                 </li>
               </ul>
-            </ng-container>
+            </span>
             <ng-template #noDrops>
               <span class="italic text-gray-500">None</span>
             </ng-template>
           </p>
           
+        </div>
   
         <!-- Action Buttons -->
         <div class="mt-6 flex justify-between">
