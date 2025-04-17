@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { BiomeService } from '@project/frontend-services';
 import { Biome, Enemy } from '@project/libs/shared/api';
 import { EnemyService } from '@project/frontend-services';
+import { BiomeDifficulty } from '@project/libs/shared/api'; 
 
 @Component({
   selector: 'app-biome-form',
@@ -17,11 +18,12 @@ export class BiomeFormComponent implements OnInit {
   biome: Partial<Biome> = {
     name: '',
     description: '',
-    difficulty: '',
+    difficulty: BiomeDifficulty.Easy,
     commonEnemies: [],
   };
 
   allEnemies: Enemy[] = [];
+  biomeDifficulties = Object.values(BiomeDifficulty);
 
   constructor(
     private route: ActivatedRoute,
@@ -33,7 +35,6 @@ export class BiomeFormComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
-    // Enemies ophalen voor dropdown
     this.enemyService.getAllEnemies().subscribe({
       next: (enemies) => {
         this.allEnemies = enemies;
@@ -57,7 +58,6 @@ export class BiomeFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.biome._id) {
-      console.log('Biome payload:', this.biome);
       this.biomeService.updateBiome(this.biome._id, this.biome as Biome).subscribe(() => {
         alert('Biome updated successfully.');
         this.router.navigate(['/biomes']);

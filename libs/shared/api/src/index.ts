@@ -5,3 +5,4 @@ export * from './lib/model/biome.interface';
 export * from './lib/model/enemy.interface';
 export * from './lib/model/item.interface';
 export * from './lib/model/enums/Enemy';
+export * from './lib/model/enums/biome';

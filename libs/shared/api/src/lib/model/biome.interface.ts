@@ -1,9 +1,10 @@
 import { Enemy } from './enemy.interface';
+import { BiomeDifficulty } from './enums/biome'; // of juiste pad
 
 export interface Biome {
-  _id?: string; // MongoDB _id als string
+  _id?: string;
   name: string;
   description: string;
-  difficulty: string;
-  commonEnemies: Enemy[]; // lijst van Enemy objecten
+  difficulty: BiomeDifficulty;
+  commonEnemies: Enemy[];
 }

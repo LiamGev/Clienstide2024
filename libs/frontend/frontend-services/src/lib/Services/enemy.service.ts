@@ -24,10 +24,9 @@ export class EnemyService {
   }
 
   getEnemyById(id: string): Observable<Enemy & { droppedItems?: Item[] }> {
-    return this.http.get<Enemy & { droppedItems?: Item[] }>(`/api/enemies/${id}`);
+    return this.http.get<Enemy & { droppedItems?: Item[] }>(`${this.apiUrl}/${id}`, {headers: this.getAuthHeaders()});
   }
   
-
   createEnemy(enemy: Enemy): Observable<Enemy> {
     return this.http.post<Enemy>(this.apiUrl, enemy, { headers: this.getAuthHeaders() });
   }
