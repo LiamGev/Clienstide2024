@@ -4,3 +4,4 @@ export * from './lib/model/api-response.interface';
 export * from './lib/model/biome.interface';
 export * from './lib/model/enemy.interface';
 export * from './lib/model/item.interface';
+export * from './lib/model/enums/Enemy';

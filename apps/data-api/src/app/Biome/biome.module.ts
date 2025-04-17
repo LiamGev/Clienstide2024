@@ -7,10 +7,11 @@ import { BiomeController } from './biome.controller';
 import { BiomeService } from './biome.service';
 import { Neo4jModule } from '../neo4j/neo4j.module';
 import { EnemyService } from '../enemy/enemy.service';
+import { ItemModule} from '../item/item.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Biome.name, schema: BiomeSchema },{ name: Enemy.name, schema: EnemySchema },{ name: User.name, schema: UserSchema},]), Neo4jModule, ],
+    MongooseModule.forFeature([{ name: Biome.name, schema: BiomeSchema },{ name: Enemy.name, schema: EnemySchema },{ name: User.name, schema: UserSchema},]), Neo4jModule,  ItemModule,],
   controllers: [BiomeController],
   providers: [BiomeService, EnemyService],
   exports: [BiomeService],

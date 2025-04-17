@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { Enemy } from '@project/libs/shared/api'; // jouw model
+import { Enemy, Item} from '@project/libs/shared/api'; // jouw model
 
 @Injectable({
   providedIn: 'root'
 })
 export class EnemyService {
 
-  private apiUrl = 'https://nodeappcside-hjajhkhxdzagdyby.northeurope-01.azurewebsites.net/api/enemy';
+  private apiUrl = 'https://nodeappcside-hjajhkhxdzagdyby.northeurope-01.azurewebsites.net/api/enemy'; 
 
   constructor(private http: HttpClient) {}
 
@@ -23,11 +23,10 @@ export class EnemyService {
     );
   }
 
-  getEnemyById(id: string): Observable<Enemy> {
-    return this.http.get<{ results: Enemy }>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() }).pipe(
-      map(response => response.results)
-    );
+  getEnemyById(id: string): Observable<Enemy & { droppedItems?: Item[] }> {
+    return this.http.get<Enemy & { droppedItems?: Item[] }>(`/api/enemies/${id}`);
   }
+  
 
   createEnemy(enemy: Enemy): Observable<Enemy> {
     return this.http.post<Enemy>(this.apiUrl, enemy, { headers: this.getAuthHeaders() });

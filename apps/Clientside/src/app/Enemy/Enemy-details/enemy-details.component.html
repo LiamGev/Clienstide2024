@@ -24,6 +24,24 @@
           <p class="text-gray-700">
             <span class="font-semibold">Class:</span> {{ enemy.class }}
           </p>
+          <p class="text-gray-700">
+            <span class="font-semibold">Dropped Items:</span>
+            <span *ngIf="enemy.droppedItems?.length; else noDrops">
+              <ul class="list-disc list-inside mt-1">
+                <li *ngFor="let item of enemy.droppedItems">
+                  {{ item.name }}
+                </li>
+              </ul>
+            </span>
+            <ng-template #noDrops>
+              <span class="italic text-gray-500">None</span>
+            </ng-template>
+          </p>
+          
+          <ng-template #noDrops>
+            <span class="italic text-gray-500">None</span>
+          </ng-template>
+          
         </div>
   
         <!-- Action Buttons -->

@@ -8,6 +8,7 @@ import { biomeCypher } from './neo4j/biome.cypher';
 import { Biome, Enemy } from '@project/libs/shared/api';
 import { BiomeDto } from './schemas/biome.dto';
 import { EnemyDto } from '../enemy/schemas/enemy.dto';
+import { EnemyType, EnemyClass } from '@project/libs/shared/api';
 
 @Injectable()
 export class BiomeService {
@@ -52,10 +53,10 @@ export class BiomeService {
         commonEnemies: (biome.commonEnemies as unknown as EnemyDto[]).map(enemy => ({
           _id: enemy._id,
           name: enemy.name,
-          type: enemy.type,
+          type: enemy.type as EnemyType,
           health: enemy.health,
           damage: enemy.damage,
-          class: enemy.class,
+          class: enemy.class as EnemyClass,
           createdBy: enemy.createdBy,
         })),
       },

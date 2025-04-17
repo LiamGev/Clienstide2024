@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { BiomeService} from '@project/frontend-services';
+import { BiomeService } from '@project/frontend-services';
 import { Biome, Enemy } from '@project/libs/shared/api';
 import { EnemyService } from '@project/frontend-services';
 
@@ -18,34 +18,44 @@ export class BiomeFormComponent implements OnInit {
     name: '',
     description: '',
     difficulty: '',
-    commonEnemies: []
+    commonEnemies: [],
   };
 
-  enemyIds: string = ''; // Voor invoer van comma-separated enemy IDs
+  allEnemies: Enemy[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private biomeService: BiomeService,
+    private enemyService: EnemyService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+
+    // Enemies ophalen voor dropdown
+    this.enemyService.getAllEnemies().subscribe({
+      next: (enemies) => {
+        this.allEnemies = enemies;
+      },
+      error: (err) => {
+        console.error('Failed to load enemies:', err);
+      },
+    });
+
     if (id) {
       this.biomeService.getBiomeById(id).subscribe((data) => {
-        this.biome = data;
-        this.enemyIds = (data.commonEnemies as unknown as string[])?.join(',') || '';
+        this.biome = {
+          ...data,
+          commonEnemies: (data.commonEnemies as any[]).map((e: any) =>
+            typeof e === 'string' ? e : e._id
+          ),
+        };
       });
     }
   }
 
   onSubmit(): void {
-    // Zet de string van IDs om naar array
-    this.biome.commonEnemies = this.enemyIds
-    .split(',')
-    .map(id => id.trim())
-    .filter(id => id.length > 0) as unknown as Enemy[];
-
     if (this.biome._id) {
       console.log('Biome payload:', this.biome);
       this.biomeService.updateBiome(this.biome._id, this.biome as Biome).subscribe(() => {
@@ -59,5 +69,4 @@ export class BiomeFormComponent implements OnInit {
       });
     }
   }
-  
 }

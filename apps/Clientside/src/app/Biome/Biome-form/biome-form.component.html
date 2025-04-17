@@ -20,17 +20,22 @@
         <input type="text" [(ngModel)]="biome.difficulty" name="difficulty" required class="mt-1 block w-full border rounded" />
       </div>
   
-    <!-- Common Enemies Field -->
-    <div>
-        <label class="block text-sm font-medium text-gray-700">Enemy IDs (comma-separated)</label>
-        <input
-        type="text"
-        [(ngModel)]="enemyIds"
-        name="commonEnemies"
-        class="mt-1 block w-full border rounded"
-        placeholder="e.g. 12345abc,67890def"
-        />
-    </div>
+        
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Common Enemies</label>
+            <select
+            multiple
+            [(ngModel)]="biome.commonEnemies"
+            name="commonEnemies"
+            class="mt-1 block w-full border rounded h-40"
+            >
+            <option *ngFor="let enemy of allEnemies" [value]="enemy._id">
+                {{ enemy.name }}
+            </option>
+            </select>
+        </div>
+  
+  
   
     <!-- Submit Button -->
     <div>

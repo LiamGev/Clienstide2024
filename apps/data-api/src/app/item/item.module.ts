@@ -10,6 +10,6 @@ import { Neo4jModule } from '../neo4j/neo4j.module';
     imports: [MongooseModule.forFeature([{ name: Item.name, schema: ItemSchema }]), Neo4jModule],
     controllers: [ItemController],
     providers: [ItemService],
-    exports: [ItemService],
+    exports: [ItemService, MongooseModule],
 })
 export class ItemModule {}

@@ -1,28 +1,36 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { HttpException } from '@nestjs/common/exceptions/http.exception';
-import { Enemy as enemyModel, EnemyDocument } from './schemas/enemy.schema';
+import { Enemy as EnemyModel, EnemyDocument } from './schemas/enemy.schema';
+import { Item as ItemModel, ItemDocument } from '../item/schemas/item.schema';
 import { Neo4jService } from '../neo4j/neo4j.service';
 import { enemyCypher } from './neo4j/enemy.cypher';
 import { itemCypher } from '../item/neo4j/item.cypher';
-import { Enemy } from '@project/libs/shared/api';
+import { Enemy, EnemyClass, EnemyType } from '@project/libs/shared/api';
 
 @Injectable()
 export class EnemyService {
   constructor(
-    @InjectModel(enemyModel.name) private readonly enemyModel: Model<EnemyDocument>,
+    @InjectModel(EnemyModel.name) private readonly enemyModel: Model<EnemyDocument>,
+    @InjectModel(ItemModel.name) private readonly itemModel: Model<ItemDocument>,
     private readonly neo4jService: Neo4jService
   ) {}
 
   async create(enemy: Enemy, currentUserId: string): Promise<Enemy> {
     try {
+      if (!Object.values(EnemyType).includes(enemy.type)) {
+        throw new HttpException(`Invalid enemy type: ${enemy.type}`, 400);
+      }
+      if (!Object.values(EnemyClass).includes(enemy.class)) {
+        throw new HttpException(`Invalid enemy class: ${enemy.class}`, 400);
+      }
+
       const enemyWithCreator = {
         ...enemy,
         createdBy: currentUserId,
       };
 
-      const createdEnemy = await (new this.enemyModel(enemyWithCreator)).save();
+      const createdEnemy = await new this.enemyModel(enemyWithCreator).save();
 
       await this.neo4jService.write(enemyCypher.addEnemy, {
         name: createdEnemy.name,
@@ -33,7 +41,7 @@ export class EnemyService {
       });
 
       for (const itemId of createdEnemy.droppedItems || []) {
-        const itemDoc = await this.enemyModel.db.model('Item').findById(itemId).exec();
+        const itemDoc = await this.itemModel.findById(itemId).exec();
         if (itemDoc) {
           await this.neo4jService.write(itemCypher.addDropRelation, {
             enemyName: createdEnemy.name,
@@ -42,9 +50,13 @@ export class EnemyService {
         }
       }
 
-      return createdEnemy;
+      return {
+        ...createdEnemy.toObject(),
+        createdBy: createdEnemy.createdBy.toString(),
+        droppedItems: (createdEnemy.droppedItems || []).map(id => id.toString()),
+      };
     } catch (error) {
-      console.log('Error creating enemy:', error);
+      console.error('Error creating enemy:', error);
       throw new HttpException('Error creating enemy', 500);
     }
   }
@@ -52,10 +64,33 @@ export class EnemyService {
   async getAll(): Promise<Enemy[]> {
     try {
       const enemies = await this.enemyModel.find().populate('droppedItems').exec(); 
-      return enemies;
+      return enemies.map(enemy => ({
+        ...enemy.toObject(),
+        createdBy: enemy.createdBy.toString(),
+        droppedItems: (enemy.droppedItems || []).map(item => item._id?.toString?.() ?? item.toString()),
+      }));
     } catch (error) {
-      console.log('Error fetching enemies:', error);
+      console.error('Error fetching enemies:', error);
       throw new HttpException('Error fetching enemies', 500);
+    }
+  }
+
+  async getEnemyById(id: string): Promise<Enemy> {
+    try {
+      const enemy = await this.enemyModel.findById(id).populate('droppedItems').exec();
+
+      if (!enemy) {
+        throw new HttpException('Enemy not found', 404);
+      }
+
+      return {
+        ...enemy.toObject(),
+        createdBy: enemy.createdBy.toString(),
+        droppedItems: (enemy.droppedItems || []).map(item => item._id?.toString?.() ?? item.toString()),
+      };
+    } catch (error) {
+      console.error('Error fetching enemy by ID:', error);
+      throw new HttpException('Error fetching enemy by ID', 500);
     }
   }
 
@@ -70,13 +105,19 @@ export class EnemyService {
       throw new ForbiddenException('You are not authorized to update this enemy');
     }
 
+    if (updateData.type && !Object.values(EnemyType).includes(updateData.type)) {
+      throw new HttpException(`Invalid enemy type: ${updateData.type}`, 400);
+    }
+    if (updateData.class && !Object.values(EnemyClass).includes(updateData.class)) {
+      throw new HttpException(`Invalid enemy class: ${updateData.class}`, 400);
+    }
+
     const updatedEnemy = await this.enemyModel.findByIdAndUpdate(
       enemyId,
       updateData,
       { new: true }
     ).exec();
 
-    // 🛠️ Update Neo4j enemy node
     await this.neo4jService.write(enemyCypher.updateEnemy, {
       name: updatedEnemy.name,
       type: updatedEnemy.type,
@@ -85,9 +126,8 @@ export class EnemyService {
       class: updatedEnemy.class,
     });
 
-
     for (const itemId of updatedEnemy.droppedItems || []) {
-      const itemDoc = await this.enemyModel.db.model('Item').findById(itemId).exec();
+      const itemDoc = await this.itemModel.findById(itemId).exec();
       if (itemDoc) {
         await this.neo4jService.write(itemCypher.addDropRelation, {
           enemyName: updatedEnemy.name,
@@ -96,7 +136,11 @@ export class EnemyService {
       }
     }
 
-    return updatedEnemy;
+    return {
+      ...updatedEnemy.toObject(),
+      createdBy: updatedEnemy.createdBy.toString(),
+      droppedItems: (updatedEnemy.droppedItems || []).map(id => id.toString()),
+    };
   }
 
   async delete(enemyId: string, currentUserId: string): Promise<Enemy> {
@@ -116,21 +160,10 @@ export class EnemyService {
       name: deletedEnemy.name,
     });
 
-    return deletedEnemy;
-  }
-
-  async getEnemyById(id: string): Promise<Enemy> {
-    try {
-      const enemy = await this.enemyModel.findById(id).populate('droppedItems').exec();
-  
-      if (!enemy) {
-        throw new HttpException('Enemy not found', 404);
-      }
-  
-      return enemy;
-    } catch (error) {
-      console.error('Error fetching enemy by ID:', error);
-      throw new HttpException('Error fetching enemy by ID', 500);
-    }
+    return {
+      ...deletedEnemy.toObject(),
+      createdBy: deletedEnemy.createdBy.toString(), 
+      droppedItems: (deletedEnemy.droppedItems || []).map(id => id.toString()),
+    }; 
   }
 }

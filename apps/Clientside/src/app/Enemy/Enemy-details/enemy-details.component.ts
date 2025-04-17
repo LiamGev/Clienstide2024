@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Enemy } from 'libs/shared/api/src/lib/model/enemy.interface';
+import { Enemy, Item } from '@project/libs/shared/api';
 import { EnemyService } from '@project/frontend-services';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./enemy-details.component.css']
 })
 export class EnemyDetailsComponent implements OnInit {
-  enemy?: Enemy;
+  enemy?: Enemy & { droppedItems?: Item[] };
   error = '';
 
   constructor(
