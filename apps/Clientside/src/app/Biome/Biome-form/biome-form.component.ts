@@ -69,4 +69,24 @@ export class BiomeFormComponent implements OnInit {
       });
     }
   }
+
+  onEnemyToggle(enemyId: string, event: Event) {
+    const input = event.target as HTMLInputElement;
+    const checked = input.checked;
+  
+    const current = this.biome.commonEnemies || [];
+  
+    if (checked) {
+      if (!current.some(enemy => enemy._id === enemyId)) {
+        const enemy = this.allEnemies.find(e => e._id === enemyId);
+        if (enemy) {
+          this.biome.commonEnemies = [...current, enemy];
+        }
+      }
+    } else {
+      this.biome.commonEnemies = current.filter(enemy => enemy._id !== enemyId);
+    }
+  }
+  
+  
 }
