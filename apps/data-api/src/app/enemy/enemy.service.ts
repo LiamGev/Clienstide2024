@@ -6,7 +6,7 @@ import { Item as ItemModel, ItemDocument } from '../item/schemas/item.schema';
 import { Neo4jService } from '../neo4j/neo4j.service';
 import { enemyCypher } from './neo4j/enemy.cypher';
 import { itemCypher } from '../item/neo4j/item.cypher';
-import { Enemy, EnemyClass, EnemyType } from '@project/libs/shared/api';
+import { Enemy, EnemyClass, EnemyType, Rarity } from '@project/libs/shared/api';
 import { Item } from '@project/libs/shared/api';
 
 @Injectable()
@@ -56,6 +56,10 @@ export class EnemyService {
       return {
         ...createdEnemy.toObject(),
         createdBy: createdEnemy.createdBy.toString(),
+        droppedItems: createdEnemy.droppedItems?.map(item => ({
+          ...item,
+          rarity: item.rarity as Rarity, // Ensure rarity is cast to the correct type
+        })),
       };
     } catch (error) {
       console.error('Error creating enemy:', error);
@@ -69,6 +73,10 @@ export class EnemyService {
       return enemies.map(enemy => ({
         ...enemy.toObject(),
         createdBy: enemy.createdBy.toString(),
+        droppedItems: enemy.droppedItems?.map(item => ({
+          ...item,
+          rarity: item.rarity as Rarity, // Cast rarity to the correct type
+        })),
       }));
     } catch (error) {
       console.error('Error fetching enemies:', error);
@@ -87,6 +95,10 @@ export class EnemyService {
     return {
       ...enemy.toObject(),
       createdBy: enemy.createdBy.toString(),
+      droppedItems: enemy.droppedItems?.map(item => ({
+        ...item,
+        rarity: item.rarity as Rarity, // Ensure rarity is cast to the correct type
+      })),
     };
   }
 
@@ -114,7 +126,10 @@ export class EnemyService {
       const itemDocs = await this.itemModel.find({
         _id: { $in: updateData.droppedItems }
       }).lean();
-      droppedItems = itemDocs;
+      droppedItems = itemDocs.map(item => ({
+        ...item,
+        rarity: item.rarity as Rarity, // Cast rarity to the correct type
+      }));
     }
 
     const updatePayload = {
@@ -146,6 +161,10 @@ export class EnemyService {
     return {
       ...updatedEnemy.toObject(),
       createdBy: updatedEnemy.createdBy.toString(),
+      droppedItems: updatedEnemy.droppedItems?.map(item => ({
+        ...item,
+        rarity: item.rarity as Rarity, // Ensure rarity is cast to the correct type
+      })),
     };
   }
 
@@ -169,6 +188,10 @@ export class EnemyService {
     return {
       ...deletedEnemy.toObject(),
       createdBy: deletedEnemy.createdBy.toString(),
+      droppedItems: deletedEnemy.droppedItems?.map(item => ({
+        ...item,
+        rarity: item.rarity as Rarity, // Ensure rarity is cast to the correct type
+      })),
     };
   }
 }

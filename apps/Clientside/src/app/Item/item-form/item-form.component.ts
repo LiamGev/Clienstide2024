@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Item } from 'libs/shared/api/src/lib/model/item.interface';
+import { Item, Rarity } from '@project/libs/shared/api';
 import { ItemService } from '@project/frontend-services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
@@ -13,8 +13,15 @@ import { HttpClientModule } from '@angular/common/http';
   templateUrl: './item-form.component.html',
   styleUrls: ['./item-form.component.css'],
 })
-export class ItemFormComponent {
-  item: Partial<Item> = { name: '', description: '', rarity: '', dropChance: '' };
+export class ItemFormComponent implements OnInit {
+  item: Partial<Item> = {
+    name: '',
+    description: '',
+    rarity: Rarity.Common,
+    dropChance: '',
+  };
+
+  rarities = Object.values(Rarity);
 
   constructor(
     private itemService: ItemService,
@@ -25,7 +32,9 @@ export class ItemFormComponent {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.itemService.getItemById(id).subscribe((data) => (this.item = data));
+      this.itemService.getItemById(id).subscribe((data) => {
+        this.item = data;
+      });
     }
   }
 
@@ -43,5 +52,3 @@ export class ItemFormComponent {
     }
   }
 }
-
-

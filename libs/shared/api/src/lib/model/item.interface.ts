@@ -1,10 +1,9 @@
-// import { Url } from "url";
+import { Rarity } from './enums/item';
 
 export interface Item {
-    _id?: string; 
-    name: string;
-    description: string;
-    rarity: string;
-    dropChance: string;
-    // imageUrl: Url;
-  }
+  _id?: string;
+  name: string;
+  description: string;
+  rarity: Rarity;
+  dropChance: string;
+}

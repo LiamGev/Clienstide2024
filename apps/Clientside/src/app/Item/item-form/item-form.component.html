@@ -26,19 +26,21 @@
         ></textarea>
       </div>
   
-      <!-- Rarity Field -->
       <div>
         <label for="rarity" class="block text-sm font-medium text-gray-700">Rarity</label>
-        <input
-          type="text"
+        <select
           id="rarity"
           [(ngModel)]="item.rarity"
           name="rarity"
           required
           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-          placeholder="e.g., Common, Rare, Legendary"
-        />
+        >
+          <option *ngFor="let rarity of rarities" [value]="rarity">
+            {{ rarity }}
+          </option>
+        </select>
       </div>
+
 
       <!-- Drop Chance Field -->
       <div>
