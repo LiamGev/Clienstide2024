@@ -75,7 +75,7 @@
         <label *ngFor="let item of items" class="inline-flex items-center">
           <input
             type="checkbox"
-            [checked]="enemy.droppedItems?.includes(item._id!)"
+            [checked]="enemy.droppedItems?.some(d => (typeof d === 'string' ? d === item._id : d._id === item._id))"
             (change)="onItemToggle(item._id!, $event)"
             class="mr-2"
           />
@@ -83,6 +83,7 @@
         </label>
       </div>
     </div>
+    
 
     <!-- Submit -->
     <div>

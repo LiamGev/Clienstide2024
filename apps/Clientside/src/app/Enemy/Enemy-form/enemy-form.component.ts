@@ -38,7 +38,6 @@ export class EnemyFormComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
-    // 🧠 Items ophalen voor dropdown
     this.itemService.getAllItems().subscribe((items) => {
       this.items = items;
     });
@@ -67,6 +66,7 @@ export class EnemyFormComponent implements OnInit {
 
   onItemToggle(itemId: string, event: Event): void {
     const input = event.target as HTMLInputElement;
+    
     const checked = input.checked;
   
     const current = this.enemy.droppedItems ?? [];

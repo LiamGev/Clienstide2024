@@ -29,7 +29,12 @@
             <span *ngIf="enemy.droppedItems?.length; else noDrops">
               <ul class="list-disc list-inside mt-1">
                 <li *ngFor="let item of enemy.droppedItems">
-                  {{ item.name }}
+                  <a
+                    [routerLink]="['/items', item._id]"
+                    class="text-blue-600 hover:underline"
+                  >
+                    {{ item.name }}
+                  </a>
                 </li>
               </ul>
             </span>
@@ -41,7 +46,6 @@
           <ng-template #noDrops>
             <span class="italic text-gray-500">None</span>
           </ng-template>
-          
         </div>
   
         <!-- Action Buttons -->

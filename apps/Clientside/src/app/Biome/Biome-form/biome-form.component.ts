@@ -70,27 +70,22 @@ export class BiomeFormComponent implements OnInit {
     }
   }
 
-  onEnemyToggle(enemyId: string | undefined, event: Event): void {
-    if (!enemyId) return;
-  
+  onEnemyToggle(enemyId: string, event: Event): void {
     const input = event.target as HTMLInputElement;
     const checked = input.checked;
-  
-    const current = this.biome.commonEnemies || [];
-  
-    if (checked) {
-      if (!current.some(enemy => enemy._id === enemyId)) {
-        this.biome.commonEnemies = [...current, { _id: enemyId } as Enemy];
-      }
-    } else {
-      this.biome.commonEnemies = current.filter(enemy => enemy._id !== enemyId);
-    }
+
+    const current = this.biome.commonEnemies ?? [];
+
+    this.biome.commonEnemies = checked
+      ? [...current, this.allEnemies.find(e => e._id === enemyId)!]
+      : current.filter(e => e._id !== enemyId);
   }
   
   
-  isSelected(enemyId: string | undefined): boolean {
-    if (!enemyId) return false;
-    return this.biome.commonEnemies?.some(enemy => enemy._id === enemyId) ?? false;
+  isSelected(enemyId: string): boolean {
+    return this.biome.commonEnemies?.some(e =>
+      typeof e === 'string' ? e === enemyId : e._id === enemyId
+    ) ?? false;
   }
   
   
