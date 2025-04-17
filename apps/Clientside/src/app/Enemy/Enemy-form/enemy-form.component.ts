@@ -64,4 +64,16 @@ export class EnemyFormComponent implements OnInit {
       });
     }
   }
+
+  onItemToggle(itemId: string, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const checked = input.checked;
+  
+    const current = this.enemy.droppedItems ?? [];
+  
+    this.enemy.droppedItems = checked
+      ? [...current, this.items.find(item => item._id === itemId)!]
+      : current.filter(item => typeof item !== 'string' && item._id !== itemId);
+  }
+  
 }

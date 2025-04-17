@@ -6,6 +6,9 @@ export type ItemDocument = Item & Document;
 
 @Schema()
 export class Item {
+    toObject(): any {
+      throw new Error('Method not implemented.');
+    }
     @IsMongoId()
     _id: string;
 

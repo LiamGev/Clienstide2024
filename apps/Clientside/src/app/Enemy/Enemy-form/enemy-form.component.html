@@ -69,20 +69,19 @@
       </select>
     </div>
 
-    <!-- Dropped Items (multiselect) -->
     <div>
-      <label for="droppedItems" class="block text-sm font-medium text-gray-700">Dropped Items</label>
-      <select
-        id="droppedItems"
-        name="droppedItems"
-        [(ngModel)]="enemy.droppedItems"
-        multiple
-        class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm h-40"
-      >
-        <option *ngFor="let item of items" [value]="item._id">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Dropped Items</label>
+      <div class="flex flex-col gap-1 max-h-60 overflow-y-auto border rounded p-2">
+        <label *ngFor="let item of items" class="inline-flex items-center">
+          <input
+            type="checkbox"
+            [checked]="enemy.droppedItems?.includes(item._id!)"
+            (change)="onItemToggle(item._id!, $event)"
+            class="mr-2"
+          />
           {{ item.name }}
-        </option>
-      </select>
+        </label>
+      </div>
     </div>
 
     <!-- Submit -->

@@ -7,6 +7,7 @@ import { Neo4jService } from '../neo4j/neo4j.service';
 import { enemyCypher } from './neo4j/enemy.cypher';
 import { itemCypher } from '../item/neo4j/item.cypher';
 import { Enemy, EnemyClass, EnemyType } from '@project/libs/shared/api';
+import { Item } from '@project/libs/shared/api';
 
 @Injectable()
 export class EnemyService {
@@ -25,9 +26,14 @@ export class EnemyService {
         throw new HttpException(`Invalid enemy class: ${enemy.class}`, 400);
       }
 
+      const itemDocs = await this.itemModel.find({
+        _id: { $in: enemy.droppedItems }
+      }).lean();
+
       const enemyWithCreator = {
         ...enemy,
         createdBy: currentUserId,
+        droppedItems: itemDocs,
       };
 
       const createdEnemy = await new this.enemyModel(enemyWithCreator).save();
@@ -40,20 +46,16 @@ export class EnemyService {
         class: createdEnemy.class,
       });
 
-      for (const itemId of createdEnemy.droppedItems || []) {
-        const itemDoc = await this.itemModel.findById(itemId).exec();
-        if (itemDoc) {
-          await this.neo4jService.write(itemCypher.addDropRelation, {
-            enemyName: createdEnemy.name,
-            itemName: itemDoc.name,
-          });
-        }
+      for (const item of createdEnemy.droppedItems || []) {
+        await this.neo4jService.write(itemCypher.addDropRelation, {
+          enemyName: createdEnemy.name,
+          itemName: item.name,
+        });
       }
 
       return {
         ...createdEnemy.toObject(),
         createdBy: createdEnemy.createdBy.toString(),
-        droppedItems: (createdEnemy.droppedItems || []).map(id => id.toString()),
       };
     } catch (error) {
       console.error('Error creating enemy:', error);
@@ -63,11 +65,10 @@ export class EnemyService {
 
   async getAll(): Promise<Enemy[]> {
     try {
-      const enemies = await this.enemyModel.find().populate('droppedItems').exec(); 
+      const enemies = await this.enemyModel.find().exec();
       return enemies.map(enemy => ({
         ...enemy.toObject(),
         createdBy: enemy.createdBy.toString(),
-        droppedItems: (enemy.droppedItems || []).map(item => item._id?.toString?.() ?? item.toString()),
       }));
     } catch (error) {
       console.error('Error fetching enemies:', error);
@@ -76,22 +77,16 @@ export class EnemyService {
   }
 
   async getEnemyById(id: string): Promise<Enemy> {
-    try {
-      const enemy = await this.enemyModel.findById(id).populate('droppedItems').exec();
+    const enemy = await this.enemyModel.findById(id).exec();
 
-      if (!enemy) {
-        throw new HttpException('Enemy not found', 404);
-      }
-
-      return {
-        ...enemy.toObject(),
-        createdBy: enemy.createdBy.toString(),
-        droppedItems: (enemy.droppedItems || []).map(item => item._id?.toString?.() ?? item.toString()),
-      };
-    } catch (error) {
-      console.error('Error fetching enemy by ID:', error);
-      throw new HttpException('Error fetching enemy by ID', 500);
+    if (!enemy) {
+      throw new HttpException('Enemy not found', 404);
     }
+
+    return {
+      ...enemy.toObject(),
+      createdBy: enemy.createdBy.toString(),
+    };
   }
 
   async update(enemyId: string, updateData: Partial<Enemy>, currentUserId: string): Promise<Enemy> {
@@ -112,9 +107,23 @@ export class EnemyService {
       throw new HttpException(`Invalid enemy class: ${updateData.class}`, 400);
     }
 
+    let droppedItems: Item[] | undefined = undefined;
+
+    if (updateData.droppedItems) {
+      const itemDocs = await this.itemModel.find({
+        _id: { $in: updateData.droppedItems }
+      }).lean();
+      droppedItems = itemDocs;
+    }
+
+    const updatePayload = {
+      ...updateData,
+      ...(droppedItems ? { droppedItems } : {}),
+    };
+
     const updatedEnemy = await this.enemyModel.findByIdAndUpdate(
       enemyId,
-      updateData,
+      updatePayload,
       { new: true }
     ).exec();
 
@@ -126,20 +135,16 @@ export class EnemyService {
       class: updatedEnemy.class,
     });
 
-    for (const itemId of updatedEnemy.droppedItems || []) {
-      const itemDoc = await this.itemModel.findById(itemId).exec();
-      if (itemDoc) {
-        await this.neo4jService.write(itemCypher.addDropRelation, {
-          enemyName: updatedEnemy.name,
-          itemName: itemDoc.name,
-        });
-      }
+    for (const item of updatedEnemy.droppedItems || []) {
+      await this.neo4jService.write(itemCypher.addDropRelation, {
+        enemyName: updatedEnemy.name,
+        itemName: item.name,
+      });
     }
 
     return {
       ...updatedEnemy.toObject(),
       createdBy: updatedEnemy.createdBy.toString(),
-      droppedItems: (updatedEnemy.droppedItems || []).map(id => id.toString()),
     };
   }
 
@@ -162,8 +167,7 @@ export class EnemyService {
 
     return {
       ...deletedEnemy.toObject(),
-      createdBy: deletedEnemy.createdBy.toString(), 
-      droppedItems: (deletedEnemy.droppedItems || []).map(id => id.toString()),
-    }; 
+      createdBy: deletedEnemy.createdBy.toString(),
+    };
   }
 }
