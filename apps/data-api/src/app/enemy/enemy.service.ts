@@ -58,7 +58,7 @@ export class EnemyService {
         createdBy: createdEnemy.createdBy.toString(),
         droppedItems: createdEnemy.droppedItems?.map(item => ({
           ...item,
-          rarity: item.rarity as Rarity, // Ensure rarity is cast to the correct type
+          rarity: item.rarity as Rarity, 
         })),
       };
     } catch (error) {
@@ -75,7 +75,7 @@ export class EnemyService {
         createdBy: enemy.createdBy.toString(),
         droppedItems: enemy.droppedItems?.map(item => ({
           ...item,
-          rarity: item.rarity as Rarity, // Cast rarity to the correct type
+          rarity: item.rarity as Rarity, 
         })),
       }));
     } catch (error) {
@@ -85,8 +85,9 @@ export class EnemyService {
   }
 
   async getEnemyById(id: string): Promise<Enemy> {
-    const enemy = await this.enemyModel.findById(id).exec();
+    const enemy = await this.enemyModel.findById(id).lean().exec();
     
+    console.log('Enemy loaded:', enemy.droppedItems);
 
     if (!enemy) {
       throw new HttpException('Enemy not found', 404);
@@ -97,7 +98,7 @@ export class EnemyService {
       createdBy: enemy.createdBy.toString(),
       droppedItems: enemy.droppedItems?.map(item => ({
         ...item,
-        rarity: item.rarity as Rarity, // Ensure rarity is cast to the correct type
+        rarity: item.rarity as Rarity,
       })),
     };
   }
@@ -128,7 +129,7 @@ export class EnemyService {
       }).lean();
       droppedItems = itemDocs.map(item => ({
         ...item,
-        rarity: item.rarity as Rarity, // Cast rarity to the correct type
+        rarity: item.rarity as Rarity, 
       }));
     }
 
@@ -163,7 +164,7 @@ export class EnemyService {
       createdBy: updatedEnemy.createdBy.toString(),
       droppedItems: updatedEnemy.droppedItems?.map(item => ({
         ...item,
-        rarity: item.rarity as Rarity, // Ensure rarity is cast to the correct type
+        rarity: item.rarity as Rarity, 
       })),
     };
   }
@@ -190,7 +191,7 @@ export class EnemyService {
       createdBy: deletedEnemy.createdBy.toString(),
       droppedItems: deletedEnemy.droppedItems?.map(item => ({
         ...item,
-        rarity: item.rarity as Rarity, // Ensure rarity is cast to the correct type
+        rarity: item.rarity as Rarity, 
       })),
     };
   }
