@@ -24,10 +24,12 @@ export class EnemyDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     const enemyId = this.route.snapshot.paramMap.get('id');
+    console.log('Enemy ID from route:', enemyId);
     if (enemyId) {
       this.enemyService.getEnemyById(enemyId).subscribe({
         next: (enemy) => {
           this.enemy = enemy;
+          console.log('Loaded enemy:', enemy);
         },
         error: (err) => {
           console.error('Error fetching enemy:', err);

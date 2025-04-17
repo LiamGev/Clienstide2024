@@ -78,6 +78,7 @@ export class EnemyService {
 
   async getEnemyById(id: string): Promise<Enemy> {
     const enemy = await this.enemyModel.findById(id).exec();
+    
 
     if (!enemy) {
       throw new HttpException('Enemy not found', 404);
