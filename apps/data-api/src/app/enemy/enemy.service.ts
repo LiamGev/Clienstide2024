@@ -86,15 +86,13 @@ export class EnemyService {
 
   async getEnemyById(id: string): Promise<Enemy> {
     const enemy = await this.enemyModel.findById(id).lean().exec();
-    
-    console.log('Enemy loaded:', enemy.droppedItems);
-
+  
     if (!enemy) {
       throw new HttpException('Enemy not found', 404);
     }
-
+  
     return {
-      ...enemy.toObject(),
+      ...enemy,
       createdBy: enemy.createdBy.toString(),
       droppedItems: enemy.droppedItems?.map(item => ({
         ...item,
@@ -102,6 +100,7 @@ export class EnemyService {
       })),
     };
   }
+  
 
   async update(enemyId: string, updateData: Partial<Enemy>, currentUserId: string): Promise<Enemy> {
     const enemy = await this.enemyModel.findById(enemyId).exec();
