@@ -14,7 +14,6 @@
     <table class="min-w-full table-auto text-left border-collapse">
       <thead class="bg-green-600 text-white">
         <tr>
-          <th class="px-6 py-4 w-48">Item ID</th>
           <th class="px-6 py-4 w-48">Name</th>
           <th class="px-6 py-4">Description</th>
           <th class="px-6 py-4 w-32">Rarity</th>
@@ -23,7 +22,6 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of items" class="hover:bg-gray-100 border-t">
-          <td class="px-6 py-4 text-sm text-gray-700 break-words">{{ item._id }}</td>
           <td class="px-6 py-4 text-blue-600 font-semibold">
             <a [routerLink]="['/items', item._id]" class="hover:underline">
               {{ item.name }}

@@ -14,7 +14,6 @@
     <table class="min-w-full table-auto text-left border-collapse">
       <thead class="bg-green-600 text-white">
         <tr>
-          <th class="px-6 py-4 w-64">ID</th>
           <th class="px-6 py-4 w-48">Name</th>
           <th class="px-6 py-4 w-64">Email</th>
           <th class="px-6 py-4 w-32">Role</th>
@@ -23,7 +22,6 @@
       </thead>
       <tbody>
         <tr *ngFor="let user of users" class="hover:bg-gray-100 border-t">
-          <td class="px-6 py-4 text-sm text-gray-700 break-words">{{ user._id }}</td>
           <td class="px-6 py-4 text-gray-800 font-medium">{{ user.name }}</td>
           <td class="px-6 py-4 text-gray-700">{{ user.email }}</td>
           <td class="px-6 py-4 text-gray-700">{{ user.role }}</td>

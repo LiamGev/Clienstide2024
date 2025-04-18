@@ -14,7 +14,6 @@
     <table class="min-w-full table-auto text-left border-collapse">
       <thead class="bg-green-600 text-white">
         <tr>
-          <th class="px-6 py-4 w-48">Enemy ID</th>
           <th class="px-6 py-4 w-48">Name</th>
           <th class="px-6 py-4 w-40">Type</th>
           <th class="px-6 py-4 w-32">Health</th>
@@ -24,7 +23,6 @@
       </thead>
       <tbody>
         <tr *ngFor="let enemy of enemies" class="hover:bg-gray-100 border-t">
-          <td class="px-6 py-4 text-sm text-gray-700 break-words">{{ enemy._id }}</td>
           <td class="px-6 py-4 text-blue-600 font-semibold">
             <a [routerLink]="['/enemies', enemy._id]" class="hover:underline">
               {{ enemy.name }}
